@@ -9,7 +9,7 @@
     "test": "jest --no-cache --watchAll",
     "dev": "ts-node-dev --respawn --ignore-watch node_modules src/app.ts",
     "build": "tsc",
-    "start": "node dist/app.js"
+    "start": "yarn run build && node dist/app.js"
   },
   "dependencies": {
     "@types/node": "^15.6.0",
