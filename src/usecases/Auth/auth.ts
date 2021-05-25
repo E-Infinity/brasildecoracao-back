@@ -10,7 +10,7 @@ class Auth {
       const {login, pass}  = request.body
       const senha =  Encrypt('sha1', pass)
       await knex('usuario').select('*')
-        .where({login, senha}).debug(true)
+        .where({login, senha})
       .then((data: any) => {
         console.log(data)
         if(data[0].idusuario){
