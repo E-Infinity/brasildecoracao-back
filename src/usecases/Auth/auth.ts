@@ -25,7 +25,7 @@ class Auth {
     // } catch (error) {
     //   response.status(400).json({error})
     // }
-    knex.raw("SELECT 'test connection';").then( (message) => {
+    knex.raw("SELECT * from usuario").then( (message) => {
       // Success / boot rest of app
       response.json(message.rows)
     }).catch( (err) => {
