@@ -25,7 +25,14 @@ class Auth {
     // } catch (error) {
     //   response.status(400).json({error})
     // }
-		response.json({login, senha})
+    knex.raw("SELECT 'test connection';").then( (message) => {
+      // Success / boot rest of app
+      response.json(message.rows)
+    }).catch( (err) => {
+      // Failure / timeout
+      console.log(err)
+      throw err
+    })
   }
 }
 
