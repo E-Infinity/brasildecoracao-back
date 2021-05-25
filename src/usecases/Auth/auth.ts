@@ -12,7 +12,7 @@ class Auth {
       await knex('usuario').select('idusuario','login',"nome",'idtipousuario','ativo')
         .where({login, senha})
       .then((data: any) => {
-        response.json({...data[0]})
+        response.json(data[0].idusuario)
         // if(data[0].idusuario){
         //   const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
         //     expiresIn: '24h'
