@@ -1,6 +1,5 @@
 import express, { application, request } from "express";
 require("dotenv").config();
-import jwt from "jsonwebtoken";
 import verifyJWT from './Auth'
 
 const router = express.Router();

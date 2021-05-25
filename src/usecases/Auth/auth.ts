@@ -17,9 +17,10 @@ class Auth {
           const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
             expiresIn: '24h'
           })
-          return response.json({...data[0], auth: true, token});
+          response.json({...data[0], auth: true, token});
+        }else{
+          response.status(401).json({message: 'Login inválido'})
         }
-        return response.status(401).json({message: 'Login inválido'})
       })
     .catch(e => response.status(400).json({err: e}))
     } catch (error) {
