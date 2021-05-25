@@ -9,10 +9,9 @@ class Auth {
     try {
       const {login, pass}  = request.body
       const senha =  Encrypt('sha1', pass)
-      await knex('usuario').select('*')
+      await knex('usuario').select('idusuario','login',"nome",'idtipousuario','ativo')
         .where({login, senha})
       .then((data: any) => {
-        console.log(data)
         if(data[0].idusuario){
           const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
             expiresIn: '24h'

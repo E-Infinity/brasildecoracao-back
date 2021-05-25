@@ -6,8 +6,8 @@ POST http://localhost:3333/auth/login
 Content-Type: application/json
 
 {
-    "user": "bdc",
-    "pass": "12546463"
+	"login": "giovanni",
+	"pass": "!Infinity99"
 }
 
 ###
