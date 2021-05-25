@@ -13,9 +13,9 @@ class Auth {
         .where({login, senha})
       .then((data: any) => {
         if(data[0].idusuario){
-          // const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
-          //   expiresIn: '24h'
-          // })
+          const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
+            expiresIn: '24h'
+          })
           response.json({...data[0], auth: true}); //, token
         }else{
           response.status(401).json({message: 'Login inválido'})
