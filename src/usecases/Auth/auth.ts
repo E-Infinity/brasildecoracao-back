@@ -16,7 +16,7 @@ class Auth {
           const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
             expiresIn: '24h'
           })
-          response.json({...data[0], auth: true}); //, token
+          response.json({...data[0], auth: true, token}); //
         }else{
           response.status(401).json({message: 'Login inválido'})
         }
