@@ -10,7 +10,7 @@ const Auth = require('./handlers/auth-handler')
 // const ClientHandler = require('./handlers/client-handler')
 
 router.get("/", function (req, res) {
-  res.json({ API: "Brasil de Coração - 1.0.0" });
+  res.json({ API: "Brasil de Coração - 1.0.1" });
 });
 
 router.use('/auth', Auth)
