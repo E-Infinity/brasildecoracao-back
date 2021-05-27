@@ -9,7 +9,7 @@ hooks:
       timeout: 300
       runas: ubuntu
   Install:
-    - location: scripts/apllication_start.sh
+    - location: scripts/apllication_install.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
