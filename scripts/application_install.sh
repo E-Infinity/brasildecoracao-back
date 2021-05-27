@@ -1,3 +1,2 @@
-#!bin/bash
-
-echo "Before Install"
+#!/bin/bash
+sleep 180
