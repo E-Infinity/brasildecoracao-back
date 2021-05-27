@@ -3,6 +3,12 @@ os: linux
 files: 
   - source: /
     destination: /home/ubuntu/app
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
 hooks:
   ApplicationStop:
     - location: scripts/application_stop.sh
