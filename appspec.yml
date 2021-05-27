@@ -8,7 +8,7 @@ hooks:
     - location: scripts/application_stop.sh
       timeout: 300
       runas: ubuntu
-  ApplicationStart:
+  ApplicationInstall:
     - location: scripts/apllication_start.sh
       timeout: 300
       runas: ubuntu
