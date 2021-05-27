@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "API - BDC",
+      "script": "dist/app.js"
+    }
+  ]
+}
