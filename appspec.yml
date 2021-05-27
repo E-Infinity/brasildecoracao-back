@@ -8,8 +8,8 @@ hooks:
     - location: scripts/application_stop.sh
       timeout: 300
       runas: ubuntu
-  Install:
-    - location: scripts/apllication_install.sh
+  BeforeInstall:
+    - location: scripts/before_install.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
