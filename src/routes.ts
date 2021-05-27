@@ -5,6 +5,7 @@ import verifyJWT from './Auth'
 const router = express.Router();
 
 const Auth = require('./handlers/auth-handler')
+const Register = require('./handlers/register-handler')
 
 // const ShippingHandler = require('./handlers/shipping-handler')
 // const ClientHandler = require('./handlers/client-handler')
@@ -14,6 +15,7 @@ router.get("/", function (req, res) {
 });
 
 router.use('/auth', Auth)
+router.use('/register', Register)
 
 router.get('/cliente', verifyJWT, (req, res, next) => {
   res.json([{id: 1, nome: 'Cliente 1'}])
