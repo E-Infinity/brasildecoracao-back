@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "API - BDC",
-      "script": "start dist/app.js"
+      "script": "dist/app.js"
     }
   ]
 }
