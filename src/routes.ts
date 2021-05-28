@@ -7,11 +7,8 @@ const router = express.Router();
 const Auth = require('./handlers/auth-handler')
 const Register = require('./handlers/register-handler')
 
-// const ShippingHandler = require('./handlers/shipping-handler')
-// const ClientHandler = require('./handlers/client-handler')
-
 router.get("/", function (req, res) {
-  res.json({ API: "Brasil de Coração - 1.0.2" });
+  res.json({ API: "Brasil de Coração - 1.0.3" });
 });
 
 router.use('/auth', Auth)
