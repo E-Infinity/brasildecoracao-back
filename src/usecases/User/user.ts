@@ -28,9 +28,8 @@ class User {
       pass = Encrypt('sha1', senha)
     }
     await knex('usuario').update({login, senha: pass, nome, email, idtipousuario, ativo})
-      .returning('idusuario')
       .where({idusuario})
-    .then(data => response.json({idusuario: data[0], message:"Usuário alterado com sucesso!"}))
+    .then(data => response.json({message:"Usuário alterado com sucesso!"}))
     .catch(e => response.status(400).json({message: "Erro ao alterar usuário"}))
   }
 }
