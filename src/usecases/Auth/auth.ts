@@ -11,6 +11,7 @@ class Auth {
     try {
       await knex('usuario').select('idusuario','login',"nome",'idtipousuario','ativo')
         .where({login, senha})
+        .where('ativo', true).debug(true)
       .then((data: any) => {
         if(data[0].idusuario){
           const token = jwt.sign({id: data.idusuario}, process.env.JWT_SECRET || '', {
@@ -21,7 +22,7 @@ class Auth {
           response.status(401).json({message: 'Login inválido'})
         }
       })
-    .catch(e => response.status(400).json({err: e}))
+      .catch(e => response.status(401).json({message: 'Login inválido', err: e}))
     } catch (error) {
       response.status(400).json({error})
     }

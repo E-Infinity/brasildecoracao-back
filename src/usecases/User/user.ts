@@ -23,11 +23,15 @@ class User {
   async update(request: Request, response: Response){
     const {idusuario} = request.params
     const {login, senha, nome, email, idtipousuario, ativo} = request.body
-    await knex('usuario').insert({login, senha: Encrypt('sha1', senha), nome, email, idtipousuario, ativo})
+    let pass
+    if(senha){
+      pass = Encrypt('sha1', senha)
+    }
+    await knex('usuario').update({login, senha: pass, nome, email, idtipousuario, ativo})
       .returning('idusuario')
       .where({idusuario})
-    .then(data => response.json({idusuario: data[0], message:"Usuário incluído com sucesso!"}))
-    .catch(e => response.status(400).json({message: "Erro ao cadastrar usuário"}))
+    .then(data => response.json({idusuario: data[0], message:"Usuário alterado com sucesso!"}))
+    .catch(e => response.status(400).json({message: "Erro ao alterar usuário"}))
   }
 }
 

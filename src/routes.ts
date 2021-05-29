@@ -12,7 +12,7 @@ router.get("/", function (req, res) {
 });
 
 router.use('/auth', Auth)
-router.use('/user', User)
+router.use('/user', verifyJWT, User)
 
 router.get('/cliente', verifyJWT, (req, res, next) => {
   res.json([{id: 1, nome: 'Cliente 1'}])
