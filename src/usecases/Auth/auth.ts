@@ -22,7 +22,7 @@ class Auth {
           response.status(401).json({message: 'Login inválido'})
         }
       })
-      .catch(e => response.status(401).json({message: 'Login inválido', err: e}))
+      .catch(e => response.status(401).json({message: 'Erro', err: e}))
     } catch (error) {
       response.status(400).json({error})
     }
