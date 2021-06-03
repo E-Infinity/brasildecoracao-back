@@ -11,7 +11,7 @@ git pull
 
 echo "Install app dependencies"
 sudo rm -rf node_modules package-lock.json
-sudo yarn install
+sudo npm install --unsafe-perm=true --allow-root
 
 echo "Build your app"
 sudo npm run build
