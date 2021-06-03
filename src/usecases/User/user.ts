@@ -5,7 +5,8 @@ import {Encrypt} from '../../utils'
 class User {
   async list(request: Request, response: Response){
     const {idusuario} = request.params
-    const sql = knex('usuario').select('idusuario','login',"nome","email",'idtipousuario','ativo')
+    const sql = knex('usuario as u').select('u.idusuario','u.login',"u.nome","u.email",'u.idtipousuario', 't.descricao as tipousuario_desc','u.ativo')
+      .leftJoin('tipousuario as t','u.idtipousuario','t.idtipousuario')
     if(idusuario){
       sql.where({idusuario})
     }
