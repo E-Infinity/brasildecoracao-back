@@ -19,3 +19,9 @@ sudo npm run build
 echo "Run new PM2 action"
 sudo cp /home/ubuntu/ecosystem.json ecosystem.json
 sudo pm2 start ecosystem.json
+
+echo "Jump to front folder"
+cd /home/ubuntu/app
+
+echo "Run new PM2 action"
+sudo pm2 start npm --name "Front - BDC" -- run "start"
