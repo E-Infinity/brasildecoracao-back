@@ -24,4 +24,4 @@ echo "Jump to front folder"
 cd /home/ubuntu/app
 
 echo "Run new PM2 action"
-sudo pm2 start npm --name "Front - BDC" -- run "start"
+sudo pm2 start npm --name "Front - BDC" -- run "start" --port 3000
