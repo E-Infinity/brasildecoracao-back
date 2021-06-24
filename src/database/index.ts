@@ -6,11 +6,11 @@ console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.en
 const connection = knex({
     client: 'pg',
     connection: {
-        host: process.env.HOST,
-        user : process.env.USER,
-        password : process.env.PASSWORD,
-        database : process.env.DATABASE,
-        port: parseInt(process.env.DBPORT ? process.env.DBPORT : '5432')
+        host: 'ec2-54-197-100-79.compute-1.amazonaws.com',
+        user : 'pguoxpkunbojve',
+        password : '5308d927b4357d7464eda6d89b5f76e2383cb9ccb6adfdf08cb24df62f694c87',
+        database : 'd6kgri96p21uvn',
+        port: 5432
     }, 
     pool: {
       afterCreate: function (conn: any, done: any) {
