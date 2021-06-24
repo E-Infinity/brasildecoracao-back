@@ -5,13 +5,15 @@ console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.en
 
 const connection = knex({
     client: 'pg',
-    connection: {
-        host: 'ec2-54-197-100-79.compute-1.amazonaws.com',
-        user : 'pguoxpkunbojve',
-        password : '5308d927b4357d7464eda6d89b5f76e2383cb9ccb6adfdf08cb24df62f694c87',
-        database : 'd6kgri96p21uvn',
-        port: 5432
-    }, 
+    connection: 'postgres://pguoxpkunbojve:5308d927b4357d7464eda6d89b5f76e2383cb9ccb6adfdf08cb24df62f694c87@ec2-54-197-100-79.compute-1.amazonaws.com:5432/d6kgri96p21uvn',
+    searchPath: ['knex', 'public'],
+    // connection: {
+    //     host: 'ec2-54-197-100-79.compute-1.amazonaws.com',
+    //     user : 'pguoxpkunbojve',
+    //     password : '5308d927b4357d7464eda6d89b5f76e2383cb9ccb6adfdf08cb24df62f694c87',
+    //     database : 'd6kgri96p21uvn',
+    //     port: 5432
+    // }, 
     pool: {
       afterCreate: function (conn: any, done: any) {
         // in this example we use pg driver's connection API
@@ -28,6 +30,7 @@ const connection = knex({
             });
           }
         });
+        console.log('Passou')
       }
     }
 })
