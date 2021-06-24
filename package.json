@@ -9,7 +9,9 @@
     "test": "jest --no-cache --watchAll",
     "dev": "ts-node-dev --respawn --ignore-watch node_modules src/app.ts",
     "build": "tsc",
-    "start": "node dist/app.js"
+    "postinstall": "npm run build",
+    "start": "node run serve",
+    "serve": "node dist/app.js"
   },
   "dependencies": {
     "@types/cors": "^2.8.10",

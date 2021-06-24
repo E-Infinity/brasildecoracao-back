@@ -1,6 +1,8 @@
 import knex from 'knex'
 require("dotenv").config();
 
+console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.env.DATABASE, process.env.PORT)
+
 const connection = knex({
     client: 'pg',
     connection: {
