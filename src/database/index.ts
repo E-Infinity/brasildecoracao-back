@@ -1,14 +1,14 @@
 import knex from 'knex'
+require("dotenv").config();
 
 const connection = knex({
     client: 'pg',
     connection: {
-        // host : 'brasildecoracao.cyyhe6g05cab.sa-east-1.rds.amazonaws.com',
-        host: "brasildecoracao.cyyhe6g05cab.sa-east-1.rds.amazonaws.com",
-        user : 'infinity',
-        password : '!Infinity99',
-        database : 'brasildecoracao',
-        port: 5432
+        host: process.env.HOST,
+        user : process.env.USER,
+        password : process.env.PASSWORD,
+        database : process.env.DATABASE,
+        port: parseInt(process.env.PORT ? process.env.PORT : '5432')
     }, 
     pool: {
       afterCreate: function (conn: any, done: any) {
