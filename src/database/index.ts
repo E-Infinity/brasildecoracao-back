@@ -1,7 +1,7 @@
 import knex from 'knex'
 require("dotenv").config();
 
-console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.env.DATABASE, process.env.PORT)
+console.log(process.env.HOST, process.env.USER, process.env.PASSWORD, process.env.DATABASE, process.env.DBPORT)
 
 const connection = knex({
     client: 'pg',
@@ -10,7 +10,7 @@ const connection = knex({
         user : process.env.USER,
         password : process.env.PASSWORD,
         database : process.env.DATABASE,
-        port: parseInt(process.env.PORT ? process.env.PORT : '5432')
+        port: parseInt(process.env.DBPORT ? process.env.DBPORT : '5432')
     }, 
     pool: {
       afterCreate: function (conn: any, done: any) {
