@@ -4,7 +4,7 @@ import knex from "../../database";
 class Client {
   async list(request: Request, response: Response){
     const {idcliente} = request.params
-    const sql = knex('cliente').select('*','idcnpj_cpf - 100000000000000 as cnpj_cpf')
+    const sql = knex('cliente').select('*',knex.raw('idcnpj_cpf - 100000000000000 as cnpj_cpf'))
     if(idcliente){
       sql.where({idcliente})
     }
