@@ -13,17 +13,17 @@ class Client {
 
   async register(request: Request, response: Response){
     const {cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
-    const idcnpj_cpf = cnpj_cpf + 100000000000000
+    const idcnpj_cpf = parseInt(cnpj_cpf) + 100000000000000
     await knex('cliente').insert({idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
       .returning('idcliente')
     .then(data => response.json({idusuario: data[0], message:"Cliente incluído com sucesso!"}))
-    .catch(e => response.status(400).json({message: "Erro ao cadastrar cliente"}))
+    .catch(e => response.status(400).json({message: "Erro ao cadastrar cliente", e}))
   }
 
   async update(request: Request, response: Response){
     const {idcliente} = request.params
     const {cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
-    const idcnpj_cpf = cnpj_cpf + 100000000000000
+    const idcnpj_cpf = parseInt(cnpj_cpf) + 100000000000000
     await knex('cliente').update({idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
       .where(idcliente)
     .then(data => response.json({message:"Cliente alterado com sucesso!"}))
