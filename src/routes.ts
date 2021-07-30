@@ -16,6 +16,6 @@ router.get("/", function (req, res) {
 router.use('/auth', Auth)
 router.use('/user', verifyJWT, User)
 router.use('/client', verifyJWT, Client)
-router.use('/product', verifyJWT, Client)
+router.use('/product', verifyJWT, Product)
 
 export default router;
