@@ -1,5 +1,5 @@
 import express from "express";
-const { Product, ColorFibra, Trama, ColorAluminio, ProductGrade } = require("../usecases/Product");
+const { Product, ColorFibra, Trama, ColorAluminio, ProductGrade, ProductPrice } = require("../usecases/Product");
 
 const router = express.Router()
 
@@ -28,5 +28,10 @@ router.get('/productgrade/list/:idproduto?', ProductGrade.list)
 router.get('/productgrade/one/:idprodutograde', ProductGrade.listOne)
 router.post('/productgrade/register', ProductGrade.register)
 
+
+// ProductPrice
+router.get('/productprice/list/:idproduto?', ProductPrice.list)
+router.post('/productprice/register', ProductPrice.register)
+router.put('/productprice/update/:idprodutovalor', ProductPrice.update)
 
 module.exports = router

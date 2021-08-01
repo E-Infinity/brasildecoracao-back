@@ -19,7 +19,8 @@ class ProductGrade {
   async list(request: Request, response: Response){
     const {idproduto} = request.params
     const sql = knex('produtograde as pg').select('pg.*', knex.raw(`
-        p.descricao as produto_desc, 
+        p.descricao as produto_desc,
+        c.descricao as corfibra_desc, 
         t.descricao as trama_desc,
         a.descricao as coraluminio_desc
       `))
