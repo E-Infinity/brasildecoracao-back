@@ -34,4 +34,4 @@ class ProductPrice {
   }
 }
 
-export default ProductPrice
+module.exports = new ProductPrice()
