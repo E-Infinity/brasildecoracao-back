@@ -4,7 +4,7 @@ import knex from "../../database";
 class ColorFibra {
   async list(request: Request, response: Response){
     const {idcorfibra} = request.params
-    const sql = knex('corfibra').select('*')
+    const sql = knex('corfibra').select(knex.raw('row_number as id'),'*')
     if(idcorfibra){
       sql.where({idcorfibra})
     }
