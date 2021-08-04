@@ -4,7 +4,7 @@ import knex from "../../database";
 class ColorAluminio {
   async list(request: Request, response: Response){
     const {idcoraluminio} = request.params
-    const sql = knex('coraluminio').select(knex.raw('row_number() OVER () as id'),'*')
+    const sql = knex('coraluminio').select(knex.raw('idcoraluminio as id'),'*')
     if(idcoraluminio){
       sql.where({idcoraluminio})
     }

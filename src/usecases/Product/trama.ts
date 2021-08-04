@@ -4,7 +4,7 @@ import knex from "../../database";
 class Trama {
   async list(request: Request, response: Response){
     const {idtrama} = request.params
-    const sql = knex('trama').select(knex.raw('row_number() OVER () as id'),'*')
+    const sql = knex('trama').select(knex.raw('idtrama as id'),'*')
     if(idtrama){
       sql.where({idtrama})
     }
