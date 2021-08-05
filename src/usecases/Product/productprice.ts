@@ -20,7 +20,7 @@ class ProductPrice {
 
   async register(request: Request, response: Response){
     const {idproduto,idtrama, idcoraluminio, custo, valor} = request.body
-    await knex('produtovalor').insert({idproduto,idtrama, idcoraluminio})
+    await knex('produtovalor').insert({idproduto,idtrama, idcoraluminio, custo, valor})
       .then(data => response.json({message:"Preço incluído com sucesso!"}))
       .catch(e => response.status(400).json({message: "Erro ao cadastrar Preço", e}))
   }
