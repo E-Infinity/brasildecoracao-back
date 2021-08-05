@@ -10,7 +10,7 @@ class ProductPrice {
         a.descricao as coraluminio_desc
       `))
       .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
-      .leftJoin('idtrama as t', 't.idtrama', 'pg.idtrama')
+      .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
       .leftJoin('coraluminio as a', 'a.idcoraluminio', 'pg.idcoraluminio')
       if(idproduto){
         sql.where('pg.idproduto', idproduto)
