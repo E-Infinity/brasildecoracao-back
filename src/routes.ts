@@ -10,7 +10,6 @@ const Client = require('./handlers/client-handler')
 const Product = require('./handlers/product-handler')
 const Branch = require('./handlers/branch-handler')
 const Sale = require('./handlers/sale-handler')
-const Payment = require('./handlers/payment-handler')
 
 router.get("/", function (req, res) {
   res.json({ API: "Brasil de Coração - 1.0.4" });
@@ -22,6 +21,5 @@ router.use('/client', verifyJWT, Client)
 router.use('/product', verifyJWT, Product)
 router.use('/branch', verifyJWT, Branch)
 router.use('/sale', verifyJWT, Sale)
-router.use('/payment', verifyJWT, Payment)
 
 export default router;

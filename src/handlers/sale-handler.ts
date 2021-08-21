@@ -1,5 +1,5 @@
 import express from "express";
-const { SalesOrder, SalesOrderSituation, OrderOrigin } = require("../usecases/Sale");
+const { SalesOrder, SalesOrderSituation, OrderOrigin, PaymentType, Trial } = require("../usecases/Sale");
 
 const router = express.Router()
 
@@ -7,6 +7,13 @@ const router = express.Router()
 // router.post('/register', SalesOrder.register)
 // router.put('/update/:idpedidovenda', SalesOrder.update)
 // router.delete('/delete/:idpedidovenda', SalesOrder.delete)
+
+router.get('/paymenttype/list/:idtipopagamento?', PaymentType.list)
+router.post('/paymenttype/register', PaymentType.register)
+router.put('/paymenttype/update/:idtipopagamento', PaymentType.update)
+
+router.get('/trial/list/:trial', Trial.list)
+router.post('/trial/register', Trial.register)
 
 router.get('/orderorigin/list/:idorigempedido?', OrderOrigin.list)
 router.post('/orderorigin/register', OrderOrigin.register)
