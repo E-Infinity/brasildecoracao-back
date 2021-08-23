@@ -4,16 +4,20 @@ import knex from "../../database";
 class ProductGrade {
   async listOne(request: Request, response: Response){
     const {idprodutograde} = request.params
-    await knex('produtograde as pg').select('pg.*', knex.raw(`
+    const sql = knex('produtograde as pg').select('pg.*', knex.raw(`
         p.descricao as produto_desc, 
         t.descricao as trama_desc,
-        a.descricao as coraluminio_desc
+        a.descricao as coraluminio_desc,
+        cf.descricao as corfibra_desc, 
       `))
       .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
       .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
-      .leftJoin('corfibra as c', 'c.idcorfibra', 'pg.idcorfibra')
+      .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
       .leftJoin('coraluminio as a', 'a.idcoraluminio', 'pg.idcoraluminio')
-      .then(data => response.json(data))
+      if(idprodutograde){
+        sql.where('pg.idproduto', idprodutograde)
+      }
+      sql.then(data => response.json(data))
   }
 
   async list(request: Request, response: Response){
