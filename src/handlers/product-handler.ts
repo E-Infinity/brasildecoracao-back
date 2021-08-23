@@ -1,7 +1,9 @@
 import express from "express";
-const { Product, ColorFibra, Trama, ColorAluminio, ProductGrade, ProductPrice } = require("../usecases/Product");
+const { Product, ColorFibra, Trama, ColorAluminio, ProductGrade, ProductPrice, Inventory } = require("../usecases/Product");
 
 const router = express.Router()
+
+//
 
 // Product
 router.get('/list/:idproduto?', Product.list)
@@ -28,9 +30,13 @@ router.get('/productgrade/list/:idproduto?', ProductGrade.list)
 router.get('/productgrade/one/:idprodutograde', ProductGrade.listOne)
 router.post('/productgrade/register', ProductGrade.register)
 
+// Inventory
+router.get('/inventory/list/:idproduto?', Inventory.list)
+router.get('/inventory/grade/:idprodutograde?', Inventory.listGrade)
 
 // ProductPrice
 router.get('/productprice/list/:idproduto?', ProductPrice.list)
+router.get('/productprice/grade/:idproduto', ProductPrice.listGrade)
 router.post('/productprice/register', ProductPrice.register)
 router.put('/productprice/update/:idprodutovalor', ProductPrice.update)
 

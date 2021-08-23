@@ -18,6 +18,27 @@ class ProductPrice {
       sql.then(data => response.json(data))
   }
 
+  async listGrade(request: Request, response: Response){
+    const {idproduto} = request.params
+    await knex('produtograde as pg').select(knex.raw(`
+      pg.*,
+      p.descricao as produto,
+      ca.descricao as coraluminio,
+      t.descricao as trama,
+      cf.descricao as corfibra,
+      pv.custo,
+      pv.valor
+    `))
+    .innerJoin('produtovalor as pv ', knex.raw(`pv.idproduto = pg.idproduto 
+      and pv.idcoraluminio = pg.idcoraluminio and pv.idtrama = pg.idtrama`))
+    .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
+    .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
+    .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
+    .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
+    .where('pg.idproduto',idproduto)
+    .then(data => response.json(data))
+  }
+
   async register(request: Request, response: Response){
     const {idproduto,idtrama, idcoraluminio, custo, valor} = request.body
     await knex('produtovalor').insert({idproduto,idtrama, idcoraluminio, custo, valor})
