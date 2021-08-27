@@ -9,7 +9,7 @@ class Auth {
     const {login, pass}  = request.body
     const senha =  Encrypt('sha1', pass)
     try {
-      await knex('usuario as u').select('u.idusuario','u.login',"u.nome","u.email",'u.idtipousuario', 't.descricao as tipousuario_desc','u.ativo')
+      await knex('usuario as u').select('u.idusuario','u.login',"u.nome","u.email",'u.idtipousuario', 't.descricao as tipousuario_desc','u.ativo', 'u.idfilial')
         .leftJoin('tipousuario as t','u.idtipousuario','t.idtipousuario')
         .where({login, senha})
         .where('u.ativo', true).debug(true)
