@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { Interface } from "readline";
 import knex from "../../database";
+import axios from 'axios'
+require("dotenv").config();
 
-
+function teste(){
+  return true
+}
 
 class SalesOrder {
   async list(request: Request, response: Response){
@@ -91,6 +95,7 @@ class SalesOrder {
               // INTEGRAÇÃO COM Tiny
 
               t.commit()
+              await insertTiny(idpedidovenda)
               response.json({message: 'Pedido incluido com sucesso!', idpedidovenda})
             }catch(err){
               t.rollback()
@@ -107,15 +112,133 @@ class SalesOrder {
     }
   }
 
-  async insertTiny(){
-    // Axios https://api.tiny.com.br/api2/pedido.incluir.php
+  async syncTiny(request: Request, response: Response){
+    const {idpedidovenda} = request.params
+    const resp = await insertTiny(idpedidovenda)
+    if(resp){
+      response.json({message: "Integração realizada."})
+    }else{
+      response.status(400).json({message: 'Erro ao realizar integração'})
+    }
   }
 
   async update(request: Request, response: Response){
+    const {idpedidovenda} = request.params
+    const {
+      idfilialsaida, 
+      idfilialorigem,
+      observacao,
+      valor_total,
+      valor_comdesconto,
+      idusuario,
+      idcliente,
+      quantidadeparcela,
+      idsituacaopedidovenda,
+      producao,
+      entrada,
+      idorigempedido,
+      idtrial
+    } = request.body
+    await knex.update('pedidovenda').update({
+      idfilialsaida, 
+      idfilialorigem,
+      observacao,
+      valor_total,
+      valor_comdesconto,
+      idusuario,
+      idcliente,
+      quantidadeparcela,
+      idsituacaopedidovenda,
+      producao,
+      entrada,
+      idorigempedido,
+      idtrial
+    }).where(idpedidovenda)
+    .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
+    .catch((e) => response.json({message: 'Erro ao realizar alteração!', e}))
   }
 
   async delete(request: Request, response: Response){
   }
+}
+
+async function insertTiny(idpedidovenda: any): Promise<boolean>{
+  const token = process.env.TOKEN_TINY
+  let pedido: any 
+  let itens: any = []
+  let ret: boolean = false
+
+  await knex('pedidovenda').select('*').where({idpedidovenda})
+    .then(async p => {
+      const cliente = await knex('cliente').select(knex.raw(`
+        nome,
+        CASE WHEN juridico THEN 'J' ELSE 'F' END as tipo_pessoa, 
+        CASE WHEN juridico THEN lpad((idcnpj_cpf - 100000000000000)::text,14,'0') ELSE lpad((idcnpj_cpf - 100000000000000)::text,11,'0') END cnpj_cpf,
+        endereco,
+        numero,
+        bairro,
+        cep,
+        cidade,
+        estado as uf,
+        telefone as fone
+      `)).where('idcliente',p[0].idcliente)
+      const item = await knex('itempedidovenda as i').select(knex.raw(`
+        pg.idprodutograde as codigo,
+        p.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as  descricao,
+        i.quantidade as quantidade,
+        i.valor as valor_unitario
+      `))
+      .leftJoin('produtograde as pg', 'pg.idprodutograde', 'i.idprodutograde')
+      .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
+      .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
+      .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
+      .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
+      .where('idpedidovenda',p[0].idpedidovenda)
+
+      for await (const i of item) {
+        itens.push({
+          item: {...i, unidade: 'UN'}
+        })
+      }
+      pedido = {
+        data_pedido: new Date(p[0].data_pedido).toLocaleString('pt-BR'),
+        data_prevista: new Date(p[0].data_prevista).toLocaleString('pt-BR'),
+        cliente: {
+          nome: cliente[0].nome,
+          tipo_pessoa: cliente[0].tipo_pessoa,
+          cpf_cnpj: cliente[0].cnpj_cpf,
+          endereco: cliente[0].endereco,
+          numero: cliente[0].numero.toString(),
+          bairro: cliente[0].bairro,
+          cep: cliente[0].cep,
+          cidade: cliente[0].cidade,
+          uf: cliente[0].uf,
+          fone: cliente[0].fone
+        },
+        itens
+      }
+    })
+    await axios.post(`https://api.tiny.com.br/api2/pedido.incluir.php`,null, {params: {
+      token,
+      formato: 'JSON',
+      pedido: {
+        pedido: {
+          ...pedido
+        }
+      }
+    }})
+    .then(async data => {
+      if(data.data.retorno.status == 'OK'){
+        await knex('pedidovenda').update({idtiny: data.data.retorno.registros.registro.id}).where({idpedidovenda})
+        ret = true
+        return true
+      }else{
+        ret = false
+        return false
+      }
+    })
+
+  return ret
 }
 
 module.exports = new SalesOrder()
