@@ -67,7 +67,8 @@ class SalesOrder {
       idorigempedido,
       idtrial,
       parcelas,
-      itens
+      itens,
+      arquivos
     } = request.body
 
     try {
@@ -88,7 +89,11 @@ class SalesOrder {
                 await t('parcela').insert([{...p, idpedidovenda}])
               }
 
-              // INTEGRAÇÃO COM Tiny
+              if(arquivos){
+                for await (const a of arquivos) {
+                  await t('arquivos').insert([{...a, idpedidovenda}])
+                }
+              }
 
               t.commit()
               const ret = await insertTiny(idpedidovenda)
