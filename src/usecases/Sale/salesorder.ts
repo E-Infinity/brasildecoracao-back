@@ -4,10 +4,6 @@ import knex from "../../database";
 import axios from 'axios'
 require("dotenv").config();
 
-function teste(){
-  return true
-}
-
 class SalesOrder {
   async list(request: Request, response: Response){
     let {idpedidovenda} = request.params 
@@ -95,8 +91,8 @@ class SalesOrder {
               // INTEGRAÇÃO COM Tiny
 
               t.commit()
-              await insertTiny(idpedidovenda)
-              response.json({message: 'Pedido incluido com sucesso!', idpedidovenda})
+              const ret = await insertTiny(idpedidovenda)
+              response.json({message: 'Pedido incluido com sucesso!', idpedidovenda, tiny: ret})
             }catch(err){
               t.rollback()
               response.status(400).json({message: 'Erro ao gerar pedido de venda, tente novamente.', err})
@@ -203,6 +199,8 @@ async function insertTiny(idpedidovenda: any): Promise<boolean>{
       pedido = {
         data_pedido: new Date(p[0].data_pedido).toLocaleString('pt-BR'),
         data_prevista: new Date(p[0].data_prevista).toLocaleString('pt-BR'),
+        numero_pedido_ecommerce: idpedidovenda,
+        ecommerce: "Plataforma E-Infinity",
         cliente: {
           nome: cliente[0].nome,
           tipo_pessoa: cliente[0].tipo_pessoa,
@@ -229,7 +227,10 @@ async function insertTiny(idpedidovenda: any): Promise<boolean>{
     }})
     .then(async data => {
       if(data.data.retorno.status == 'OK'){
-        await knex('pedidovenda').update({idtiny: data.data.retorno.registros.registro.id}).where({idpedidovenda})
+        const idtiny = data.data.retorno.registros.registro.id
+        const sequenciatiny = data.data.retorno.registros.registro.sequencia
+        const numerotiny = data.data.retorno.registros.registro.numero
+        await knex('pedidovenda').update({idtiny, sequenciatiny, numerotiny}).where({idpedidovenda})
         ret = true
         return true
       }else{
