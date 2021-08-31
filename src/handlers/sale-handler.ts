@@ -1,5 +1,5 @@
 import express from "express";
-const { SalesOrder, SalesOrderSituation, OrderOrigin, PaymentType, Trial } = require("../usecases/Sale");
+const { SalesOrder, SalesOrderSituation, OrderOrigin, PaymentType, Trial, FileOrder } = require("../usecases/Sale");
 
 const router = express.Router()
 
@@ -25,5 +25,9 @@ router.get('/ordersituation/list/:idsituacaopedidovenda?', SalesOrderSituation.l
 router.post('/ordersituation/register', SalesOrderSituation.register)
 router.put('/ordersituation/update/:idsituacaopedidovenda', SalesOrderSituation.update)
 // router.delete('/ordersituation/delete/:idsituacaopedidovenda', SalesOrderSituation.delete)
+
+router.get('/fileorder/list/:idpedidovenda?', FileOrder.list)
+router.post('/fileorder/register', FileOrder.register)
+router.put('/fileorder/update/:idpedidovenda', FileOrder.update)
 
 module.exports = router
