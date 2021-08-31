@@ -36,13 +36,16 @@ class SalesOrder {
           .leftJoin('corfibra as cf', 'pg.idcorfibra', 'cf.idcorfibra')
           .leftJoin('coraluminio as ca', 'pg.idcoraluminio', 'ca.idcoraluminio')
           .where('i.idpedidovenda', d.idpedidovenda)
-
+        const arquivos = await knex('arquivos').select('*')
+          .where('idpedidovenda', d.idpedidovenda)
+          
         pedidos.push({
           ...d,
           itempedidovenda,
           parcelas,
           cliente,
-          usuario
+          usuario,
+          arquivos
         })
       }
       response.json(pedidos)
