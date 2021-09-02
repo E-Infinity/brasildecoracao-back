@@ -4,6 +4,7 @@ const OrderOrigin = require('./orderorigin')
 const PaymentType = require('./paymenttype')
 const Trial = require('./trial')
 const FileOrder = require('./fileorder')
+const SaleComment = require('./salecomment')
 
 module.exports = {
   SalesOrder,
@@ -11,5 +12,6 @@ module.exports = {
   OrderOrigin,
   PaymentType,
   Trial,
-  FileOrder
+  FileOrder,
+  SaleComment
 }
