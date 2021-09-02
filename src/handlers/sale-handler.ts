@@ -33,6 +33,6 @@ router.delete('/comment/delete/:idcomentario', SaleComment.delete)
 
 router.get('/fileorder/list/:idpedidovenda?', FileOrder.list)
 router.post('/fileorder/register', FileOrder.register)
-router.put('/fileorder/update/:idpedidovenda', FileOrder.update)
+router.delete('/fileorder/delete/:idarquivos', FileOrder.update)
 
 module.exports = router

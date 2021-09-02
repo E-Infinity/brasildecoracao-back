@@ -12,12 +12,20 @@ class FileOrder {
   }
 
   async register(request: Request, response: Response){
+    const { nome, idpedidovenda, arquivo, tipo } = request.body
+    await knex('arquivos').insert({nome, idpedidovenda, arquivo, tipo})
+      .then(() => response.json({message: 'Arquivo incluido com sucesso.'}))
+      .catch(() => response.status(400).json({message: 'Erro ao incluir arquivo.'}))
   }
 
   async update(request: Request, response: Response){
   }
 
   async delete(request: Request, response: Response){
+    const { idarquivos } = request.params
+    await knex('arquivos').delete().where({idarquivos})
+      .then(() => response.json({message: 'Arquivo excluido com sucesso.'}))
+      .catch(() => response.status(400).json({message: 'Erro ao excluir arquivo.'}))
   }
 }
 

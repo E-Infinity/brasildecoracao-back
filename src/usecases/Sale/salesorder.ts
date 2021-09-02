@@ -99,8 +99,8 @@ class SalesOrder {
               }
 
               t.commit()
-              const ret = await insertTiny(idpedidovenda)
-              response.json({message: 'Pedido incluido com sucesso!', idpedidovenda, tiny: ret})
+              //const ret = await insertTiny(idpedidovenda)
+              response.json({message: 'Pedido incluido com sucesso!', idpedidovenda})
             }catch(err){
               t.rollback()
               response.status(400).json({message: 'Erro ao gerar pedido de venda, tente novamente.', err})
