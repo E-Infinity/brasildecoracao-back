@@ -1,5 +1,4 @@
 import { Request, response, Response } from "express";
-import { Interface } from "readline";
 import knex from "../../database";
 import axios from 'axios'
 require("dotenv").config();
