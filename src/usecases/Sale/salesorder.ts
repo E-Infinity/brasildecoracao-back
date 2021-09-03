@@ -145,7 +145,7 @@ class SalesOrder {
       idorigempedido,
       idtrial
     } = request.body
-    await knex.update('pedidovenda').update({
+    await knex('pedidovenda').update({
       idfilialsaida, 
       idfilialorigem,
       observacao,
@@ -161,7 +161,7 @@ class SalesOrder {
       idtrial
     }).where(idpedidovenda)
     .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
-    .catch((e) => response.json({message: 'Erro ao realizar alteração!', e}))
+    .catch((e) => response.status(400).json({message: 'Erro ao realizar alteração!', e}))
   }
 
   async delete(request: Request, response: Response){
