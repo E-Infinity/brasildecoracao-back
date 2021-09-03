@@ -37,6 +37,8 @@ class SalesOrder {
           .where('i.idpedidovenda', d.idpedidovenda)
         const arquivos = await knex('arquivos').select('*')
           .where('idpedidovenda', d.idpedidovenda)
+        const comentarios = await knex('comentario').select('*')
+          .where('idpedidovenda', d.idpedidovenda)
           
         pedidos.push({
           ...d,
@@ -44,7 +46,8 @@ class SalesOrder {
           parcelas,
           cliente,
           usuario,
-          arquivos
+          arquivos,
+          comentarios
         })
       }
       response.json(pedidos)
