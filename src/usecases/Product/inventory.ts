@@ -31,12 +31,10 @@ class Inventory {
 
   async listGrade(request: Request, response: Response){
     const {idprodutograde} = request.params
-    const sql = knex('estoque as e').select('e.*','f.descricao as filial_desc')
-      .leftJoin('filial as f', 'e.idfilial', 'f.idfilial')
-    if(idprodutograde){
-      sql.where({idprodutograde})
-    }
-    sql.then(data => response.json(data))
+    await knex('filial as f').select('f.*', knex.raw(`${idprodutograde} as idprodutograde, coalesce(e.quantidade,0) as quantidade`))
+      .leftJoin('estoque as e', knex.raw(`e.idfilial = f.idfilial and e.idprodutograde = ${idprodutograde}`))
+      .where('f.idtipofilial','=',2)
+      .then(data => response.json(data))
   }
 }
 
