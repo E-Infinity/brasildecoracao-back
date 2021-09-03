@@ -159,7 +159,7 @@ class SalesOrder {
       entrada,
       idorigempedido,
       idtrial
-    }).where(idpedidovenda)
+    }).where({idpedidovenda}).debug(true)
     .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
     .catch((e) => response.status(400).json({message: 'Erro ao realizar alteração!', e}))
   }
