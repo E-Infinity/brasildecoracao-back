@@ -50,6 +50,17 @@ class ProductGrade {
       .catch(e => response.status(400).json({message: "Erro ao cadastrar produto grade", e}))
   }
 
+  async update(request: Request, response: Response){
+    const {idprodutograde} = request.params
+    const {idproduto,idcorfibra,idtrama, idcoraluminio,ativo} = request.body
+    await knex('produtograde').update({idproduto,idcorfibra,idtrama, idcoraluminio, ativo})
+        .where({idprodutograde})
+      .then(data => {
+        response.json({message:"Produto Grade alterado com sucesso!"})
+      })
+      .catch(e => response.status(400).json({message: "Erro ao alterar produto grade", e}))
+  }
+
   async insertTiny(idprodutograde: number, token: string | undefined) {
     await knex('produtograde as pg').select(knex.raw(`
         pg.idprodutograde as sequencia,

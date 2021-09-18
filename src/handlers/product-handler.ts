@@ -29,6 +29,7 @@ router.put('/coloraluminio/update/:idcoraluminio', ColorAluminio.update)
 router.get('/productgrade/list/:idproduto?', ProductGrade.list)
 router.get('/productgrade/one/:idprodutograde', ProductGrade.listOne)
 router.post('/productgrade/register', ProductGrade.register)
+router.put('/productgrade/update/:idprodutograde', ProductGrade.update)
 
 // Inventory
 router.get('/inventory/list/:idproduto?', Inventory.list)
