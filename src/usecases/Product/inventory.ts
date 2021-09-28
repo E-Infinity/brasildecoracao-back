@@ -36,7 +36,7 @@ class Inventory {
     const {idprodutograde} = request.params
     await knex('filial as f').select('f.*', knex.raw(`${idprodutograde} as idprodutograde, coalesce(e.quantidade,0) as quantidade`))
       .leftJoin('estoque as e', knex.raw(`e.idfilial = f.idfilial and e.idprodutograde = ${idprodutograde}`))
-      .where('f.idtipofilial','=',2)
+      .where('f.idtipofilial','=',2).orderBy('f.idfilial')
       .then(data => response.json(data))
   }
 }
