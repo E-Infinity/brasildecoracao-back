@@ -13,9 +13,11 @@ class SalesOrder {
       .leftJoin('origempedido as o', 'o.idorigempedido', 'p.idorigempedido')
       .leftJoin('trial as t', 't.idtrial', 'p.idtrial')
     if(idpedidovenda){
-      sql.where(idpedidovenda)
+      sql.where('p.idpedidovenda',idpedidovenda)
     }
+    // sql.debug(true)
     sql.then(async data => {
+      console.log(data)
       for await (const d of data) {
         const cliente  = await knex('cliente').select('*').where('idcliente', d.idcliente)
         const parcelas = await knex('parcela as p').select('p.*', 't.descricao as tipopagamento')
@@ -52,6 +54,7 @@ class SalesOrder {
       }
       response.json(pedidos)
     })
+    sql.catch(e => console.log(e))
   }
 
 
