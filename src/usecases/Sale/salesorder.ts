@@ -76,7 +76,8 @@ class SalesOrder {
       idtrial,
       parcelas,
       itens,
-      arquivos
+      arquivos,
+      data_prevista
     } = request.body
 
     try {
@@ -84,7 +85,7 @@ class SalesOrder {
         knex('pedidovenda')
           .transacting(t)
           .insert({idfilialorigem, observacao, valor_total, valor_comdesconto, idusuario, idcliente,
-            quantidadeparcela, idsituacaopedidovenda, producao, entrada, idorigempedido,idtrial
+            quantidadeparcela, idsituacaopedidovenda, producao, entrada, idorigempedido,idtrial,data_prevista
           }).returning('idpedidovenda')
           .then(async d => {
             idpedidovenda = d[0]
@@ -146,7 +147,7 @@ class SalesOrder {
       producao,
       entrada,
       idorigempedido,
-      idtrial
+      idtrial,data_prevista
     } = request.body
     await knex('pedidovenda').update({
       idfilialsaida, 
@@ -161,7 +162,7 @@ class SalesOrder {
       producao,
       entrada,
       idorigempedido,
-      idtrial
+      idtrial,data_prevista
     }).where({idpedidovenda}).debug(true)
     .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
     .catch((e) => response.status(400).json({message: 'Erro ao realizar alteração!', e}))
