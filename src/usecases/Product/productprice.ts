@@ -48,8 +48,8 @@ class ProductPrice {
 
   async update(request: Request, response: Response){
     const {idprodutovalor} = request.params
-    const {custo, valor} = request.body
-    await knex('produtovalor').update({custo,valor}).where({idprodutovalor})
+    const {custo, valor,idtrama, idcoraluminio,} = request.body
+    await knex('produtovalor').update({custo,valor,idtrama, idcoraluminio,}).where({idprodutovalor})
       .then(data => response.json({message: 'Valor alterado com suesso'}))
       .catch(e => response.status(400).json({message: "Erro ao alterar Preço", e}))
   }
