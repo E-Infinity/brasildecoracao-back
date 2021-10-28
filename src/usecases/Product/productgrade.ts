@@ -44,7 +44,7 @@ class ProductGrade {
     const {idproduto,idcorfibra,idtrama, idcoraluminio} = request.body
     await knex('produtograde').insert({idproduto,idcorfibra,idtrama, idcoraluminio}).returning('idprodutograde')
       .then(data => {
-        this.insertTiny(parseInt(data[0]), process.env.TOKEN_TINY )
+        //this.insertTiny(parseInt(data[0]), process.env.TOKEN_TINY )
         response.json({message:"Produto Grade incluída com sucesso!"})
       })
       .catch(e => response.status(400).json({message: "Erro ao cadastrar produto grade", e}))
@@ -92,7 +92,7 @@ class ProductGrade {
             }
           ]
         }
-      }})
+      }}).catch(e => console.log(e))
     })
   }
 }
