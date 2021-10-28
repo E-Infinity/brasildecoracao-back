@@ -27,7 +27,7 @@ class SalesOrder {
           .leftJoin('tipousuario as t', 't.idtipousuario', 'u.idtipousuario')
           .where('u.idusuario', d.idusuario)
         const itempedidovenda = await knex('itempedidovenda as i').select('i.*', 'f.cidade', 'f.uf', 'f.descricao as filial',
-            'pg.idproduto', 'p.descricao as produto','pg.idtrama', 't.descricao as trama', 'pg.idcorfibra', 'cf.descricao as corfibra',
+            'pg.idproduto', 'p.descricao as produto','pg.idtrama', 't.descricao as trama_desc', 'pg.idcorfibra', 'cf.descricao as corfibra',
             'pg.idcoraluminio', 'ca.descricao as coraluminio'
           )
           .leftJoin('filial as f', 'f.idfilial', 'i.idfilialsaldo')
