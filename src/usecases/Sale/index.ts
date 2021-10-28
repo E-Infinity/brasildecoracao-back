@@ -1,4 +1,5 @@
 const SalesOrder = require('./salesorder')
+const SalesOrderItem = require('./salesorderitem')
 const SalesOrderSituation = require('./salesordersituation')
 const OrderOrigin = require('./orderorigin')
 const PaymentType = require('./paymenttype')
@@ -13,5 +14,6 @@ module.exports = {
   PaymentType,
   Trial,
   FileOrder,
-  SaleComment
+  SaleComment,
+  SalesOrderItem
 }

@@ -1,11 +1,13 @@
 import express from "express";
-const { SalesOrder, SalesOrderSituation, OrderOrigin, PaymentType, Trial, FileOrder, SaleComment } = require("../usecases/Sale");
+const { SalesOrder, SalesOrderSituation, OrderOrigin, PaymentType, Trial, FileOrder, SaleComment, SalesOrderItem } = require("../usecases/Sale");
 
 const router = express.Router()
 
 router.get('/list/:idpedidovenda?', SalesOrder.list)
 router.post('/register', SalesOrder.register)
 router.put('/update/:idpedidovenda', SalesOrder.update)
+
+router.put('/item/update/:iditempedidovenda', SalesOrderItem.update)
 
 router.delete('/delete/:idpedidovenda', SalesOrder.delete)
 router.get('/tiny/:idpedidovenda', SalesOrder.syncTiny)
