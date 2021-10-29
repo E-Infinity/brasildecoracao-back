@@ -10,9 +10,9 @@ class SalesOrderItem {
 
   async update(request: Request, response: Response){
     const {iditempedidovenda} = request.params
-    const {montagem,trama,tapearia} = request.body
+    const {montagem,trama,tapecaria} = request.body
     await knex('itempedidovenda').update({
-      montagem,trama,tapearia
+      montagem,trama,tapecaria
     }).where({iditempedidovenda}).debug(true)
     .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
     .catch((e) => response.status(400).json({message: 'Erro ao realizar alteração!', e}))
