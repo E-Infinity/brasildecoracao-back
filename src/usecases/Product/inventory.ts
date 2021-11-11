@@ -25,7 +25,7 @@ class Inventory {
     .leftJoin('coraluminio as ca','ca.idcoraluminio','pg.idcoraluminio')
     .leftJoin('trama as t','t.idtrama','pg.idtrama')
     .leftJoin('corfibra as cf','cf.idcorfibra','pg.idcorfibra')
-    .leftJoin('produtovalor as pv', knex.raw('pv.idproduto = pg.idproduto and pv.idcoraluminio = pg.idcoraluminio and pg.idtrama = pv.idtrama'))
+    .leftJoin('produtovalor as pv', knex.raw('pv.idproduto = pg.idproduto and pg.idtrama = pv.idtrama'))
     if(idprodutograde){
       sql.where('e.idprodutograde',idprodutograde)
     }
