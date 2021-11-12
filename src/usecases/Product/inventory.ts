@@ -26,6 +26,7 @@ class Inventory {
     .leftJoin('trama as t','t.idtrama','pg.idtrama')
     .leftJoin('corfibra as cf','cf.idcorfibra','pg.idcorfibra')
     .leftJoin('produtovalor as pv', knex.raw('pv.idproduto = pg.idproduto and pg.idtrama = pv.idtrama'))
+    .where('e.quantidade','>', 0)
     if(idprodutograde){
       sql.where('e.idprodutograde',idprodutograde)
     }
