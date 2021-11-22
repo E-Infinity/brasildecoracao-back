@@ -37,8 +37,9 @@ class SalesOrder {
           .leftJoin('corfibra as cf', 'pg.idcorfibra', 'cf.idcorfibra')
           .leftJoin('coraluminio as ca', 'pg.idcoraluminio', 'ca.idcoraluminio')
           .where('i.idpedidovenda', d.idpedidovenda)
-        const arquivos = await knex('arquivos').select('*')
-          .where('idpedidovenda', d.idpedidovenda)
+        // const arquivos = await knex('arquivos').select('*')
+        //   .where('idpedidovenda', d.idpedidovenda)
+        const arquivos: [] = []
         const comentarios = await knex('comentario').select('*')
           .where('idpedidovenda', d.idpedidovenda)
           
