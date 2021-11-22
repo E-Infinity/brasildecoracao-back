@@ -26,21 +26,20 @@ class SalesOrder {
         const usuario  = await knex('usuario as u').select('u.*', 't.descricao as tipousuario')
           .leftJoin('tipousuario as t', 't.idtipousuario', 'u.idtipousuario')
           .where('u.idusuario', d.idusuario)
-        // const itempedidovenda = await knex('itempedidovenda as i').select('i.*', 'f.cidade', 'f.uf', 'f.descricao as filial',
-        //     'pg.idproduto', 'p.descricao as produto','pg.idtrama', 't.descricao as trama_desc', 'pg.idcorfibra', 'cf.descricao as corfibra',
-        //     'pg.idcoraluminio', 'ca.descricao as coraluminio'
-        //   )
-        //   .leftJoin('filial as f', 'f.idfilial', 'i.idfilialsaldo')
-        //   .leftJoin('produtograde as pg', 'pg.idprodutograde', 'i.idprodutograde')
-        //   .leftJoin('produto as p', 'pg.idproduto', 'p.idproduto')
-        //   .leftJoin('trama as t', 'pg.idtrama', 't.idtrama')
-        //   .leftJoin('corfibra as cf', 'pg.idcorfibra', 'cf.idcorfibra')
-        //   .leftJoin('coraluminio as ca', 'pg.idcoraluminio', 'ca.idcoraluminio')
-        //   .where('i.idpedidovenda', d.idpedidovenda)
-        const itempedidovenda: [] = []
-        // const arquivos = await knex('arquivos').select('*')
-        //   .where('idpedidovenda', d.idpedidovenda)
-        const arquivos: [] = []
+        const itempedidovenda = await knex('itempedidovenda as i').select('i.*', 'f.cidade', 'f.uf', 'f.descricao as filial',
+            'pg.idproduto', 'p.descricao as produto','pg.idtrama', 't.descricao as trama_desc', 'pg.idcorfibra', 'cf.descricao as corfibra',
+            'pg.idcoraluminio', 'ca.descricao as coraluminio'
+          )
+          .leftJoin('filial as f', 'f.idfilial', 'i.idfilialsaldo')
+          .leftJoin('produtograde as pg', 'pg.idprodutograde', 'i.idprodutograde')
+          .leftJoin('produto as p', 'pg.idproduto', 'p.idproduto')
+          .leftJoin('trama as t', 'pg.idtrama', 't.idtrama')
+          .leftJoin('corfibra as cf', 'pg.idcorfibra', 'cf.idcorfibra')
+          .leftJoin('coraluminio as ca', 'pg.idcoraluminio', 'ca.idcoraluminio')
+          .where('i.idpedidovenda', d.idpedidovenda)
+        
+        const arquivos = await knex('arquivos').select('*')
+          .where('idpedidovenda', d.idpedidovenda)
         const comentarios = await knex('comentario').select('*')
           .where('idpedidovenda', d.idpedidovenda)
           
