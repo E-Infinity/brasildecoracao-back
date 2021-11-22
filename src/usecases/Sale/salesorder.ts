@@ -15,9 +15,8 @@ class SalesOrder {
     if(idpedidovenda){
       sql.where('p.idpedidovenda',idpedidovenda)
     }
-    // sql.debug(true)
+    //sql.debug(true)
     sql.then(async data => {
-      console.log(data)
       for await (const d of data) {
         const cliente  = await knex('cliente').select('*').where('idcliente', d.idcliente)
         const parcelas = await knex('parcela as p').select('p.*', 't.descricao as tipopagamento')
