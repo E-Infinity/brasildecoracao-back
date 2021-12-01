@@ -13,7 +13,7 @@ const Sale = require('./handlers/sale-handler')
 const Movement = require('./handlers/movement-handler')
 
 router.get("/", function (req, res) {
-  res.json({ API: "Brasil de Coração - 1.0.4" });
+  res.json({ API: "Brasil de Coração - 1.0.5" });
 });
 
 router.use('/auth', Auth)
