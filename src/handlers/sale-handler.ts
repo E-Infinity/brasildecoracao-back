@@ -6,6 +6,7 @@ const router = express.Router()
 router.get('/list/:idpedidovenda?', SalesOrder.list)
 router.post('/register', SalesOrder.register)
 router.put('/update/:idpedidovenda', SalesOrder.update)
+router.post('/list/:idsituacaopedidovenda?', SalesOrder.list)
 
 router.put('/item/update/:iditempedidovenda', SalesOrderItem.update)
 
