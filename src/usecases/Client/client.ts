@@ -12,9 +12,9 @@ class Client {
   }
 
   async register(request: Request, response: Response){
-    const {ativo,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
+    const {observacao,ativo,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
     const idcnpj_cpf = parseInt(cnpj_cpf) + 100000000000000
-    await knex('cliente').insert({ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
+    await knex('cliente').insert({observacao,ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
       .returning('idcliente').debug(true)
     .then(data => response.json({idusuario: data[0], message:"Cliente incluído com sucesso!"}))
     .catch(e => response.status(400).json({message: "Erro ao cadastrar cliente", e}))
@@ -22,10 +22,10 @@ class Client {
 
   async update(request: Request, response: Response){
     const {idcliente} = request.params
-    const {ativo,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
+    const {observacao,ativo,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
     const idcnpj_cpf = parseInt(cnpj_cpf) + 100000000000000
     console.log({ativo,idcnpj_cpf,idcliente,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
-    await knex('cliente').update({ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
+    await knex('cliente').update({observacao,ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
       .where('idcliente', idcliente)
     .then(data => response.json({message:"Cliente alterado com sucesso!"}))
     .catch(e => response.status(400).json({message: "Erro ao alterar cliente", e}))
