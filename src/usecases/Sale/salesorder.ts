@@ -6,8 +6,7 @@ require("dotenv").config();
 class SalesOrder {
   async list(request: Request, response: Response){
     let {idpedidovenda} = request.params 
-    let {idsituacaopedidovenda} = request.params
-    let {idcliente, idvendedor, idfilial, idorigempedido, periodo} = request.body 
+    let {idcliente, idvendedor, idfilial, idorigempedido, periodo,idsituacaopedidovenda} = request.body 
     let pedidos: any = []
     const sql = knex('pedidovenda as p' ).select('p.*','t.trial','f.descricao as filial', 'f.cidade', 'f.uf', 's.descricao as situacaopedidovenda', 'o.descricao as origempedido')
       .leftJoin('filial as f', 'f.idfilial','p.idfilialorigem')
@@ -18,7 +17,7 @@ class SalesOrder {
       sql.where('p.idpedidovenda',idpedidovenda)
     }
     if(idsituacaopedidovenda){
-      sql.where('p.idsituacaopedidovenda',idsituacaopedidovenda)
+      sql.whereIn('p.idsituacaopedidovenda',[idsituacaopedidovenda])
     }
     if(idcliente){
       sql.where('p.idcliente', idcliente)
@@ -35,7 +34,7 @@ class SalesOrder {
     if(periodo){
       sql.whereBetween('p.data_pedido',periodo)
     }
-    //sql.debug(true)
+    sql.debug(true)
     sql.then(async data => {
       console.log(1)
       for await (const d of data) {
