@@ -17,7 +17,7 @@ class SalesOrder {
       sql.where('p.idpedidovenda',idpedidovenda)
     }
     if(idsituacaopedidovenda){
-      sql.whereIn('p.idsituacaopedidovenda',[idsituacaopedidovenda])
+      sql.whereIn('p.idsituacaopedidovenda',idsituacaopedidovenda)
     }
     if(idcliente){
       sql.where('p.idcliente', idcliente)
