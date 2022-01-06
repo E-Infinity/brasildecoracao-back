@@ -20,8 +20,8 @@ class Product {
 
   async update(request: Request, response: Response){
     const {idproduto} = request.params
-    const {descricao, ncm, altura, largura, profundidade, peso, personalizar} = request.body
-    await knex('produto').update({descricao, ncm, altura, largura, profundidade, peso, personalizar})
+    const {descricao, ncm, altura, largura, profundidade, peso, personalizar, ativo} = request.body
+    await knex('produto').update({descricao, ncm, altura, largura, profundidade, peso, personalizar,ativo})
       .where({idproduto})
       .then(data => response.json({message:"Produto alterada com sucesso!"}))
       .catch(e => response.status(400).json({message: "Erro ao alterar produto", e}))
