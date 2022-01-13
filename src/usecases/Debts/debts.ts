@@ -62,7 +62,7 @@ class Debts {
   async update(request: Request, response: Response){
     const {idcontaspagarparcela} = request.params
     const {pago} = request.body
-    await knex('contaspagarparcela').update({pago}).where({idcontaspagarparcela})
+    await knex('contaspagarparcela').update({pago, datapagamento: knex.raw('current_date')}).where({idcontaspagarparcela})
       .then(d => response.json({message: 'Parcela alterada com sucesso!'}))
       .catch(e => response.status(400).json({message: 'Erro ao alterar parcela, tente novamente', err: e}))
   }
