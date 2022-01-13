@@ -24,8 +24,7 @@ class Client {
     const {idcliente} = request.params
     const {fornecedor,observacao,ativo,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico} = request.body
     const idcnpj_cpf = parseInt(cnpj_cpf) + 100000000000000
-    console.log({fornecedor,observacao,ativo,idcnpj_cpf,idcliente,cnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
-    await knex('cliente').update({observacao,ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
+    await knex('cliente').update({fornecedor,observacao,ativo,idcnpj_cpf, nome, email, endereco, numero,bairro, cidade, estado, cep, telefone, celular, juridico})
       .where('idcliente', idcliente)
     .then(data => response.json({message:"Cliente alterado com sucesso!"}))
     .catch(e => response.status(400).json({message: "Erro ao alterar cliente", e}))
