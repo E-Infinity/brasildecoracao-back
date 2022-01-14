@@ -6,11 +6,12 @@ class Debts {
     const {idcontaspagar} = request.params
     const {status, idfornecedor, periodo} = request.body
     let contas: any = []
-    const sql = knex('contaspagar as c').select('c.*','cl.nome as fornecedor', 't.descricao as tipodocumento', knex.raw('sum(p2.valor) as total'))
+    const sql = knex('contaspagar as c').select('c.*','cl.nome as fornecedor', 't.descricao as tipodocumento', 
+        knex.raw('(select sum(p2.valor) from contaspagarparcela p2 where p2.idcontaspagar = c.idcontaspagar) as total')
+      )
       .leftJoin('cliente as cl', 'cl.idcliente', 'c.idfornecedor')
       .leftJoin('tipodocumento as t', 't.idtipodocumento','c.idtipodocumento')
       .leftJoin('contaspagarparcela as p', 'p.idcontaspagar','c.idcontaspagar')
-      .leftJoin('contaspagarparcela as p2', 'p2.idcontaspagar','c.idcontaspagar')
       .groupBy(1,2,3,4,5,6,7,8,9).debug(true)
     if(idcontaspagar){
       sql.where('c.idcontaspagar',idcontaspagar)
