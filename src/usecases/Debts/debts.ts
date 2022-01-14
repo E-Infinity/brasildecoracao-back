@@ -50,12 +50,12 @@ class Debts {
 
   async register(request: Request, response: Response){
     let idcontaspagar: number | null = null
-    const {numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,parcelas} = request.body
+    const {numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,parcelas,observacao} = request.body
     console.log({})
     try{
       await knex.transaction((t) => {
         knex('contaspagar').transacting(t)
-        .insert({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor})
+        .insert({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,observacao})
         .returning('idcontaspagar').debug(true)
         .then(async d => {
           idcontaspagar = d[0]
