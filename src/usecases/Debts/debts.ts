@@ -4,18 +4,39 @@ import knex from "../../database";
 class Debts {
   async list(request: Request, response: Response){
     const {idcontaspagar} = request.params
+    const {status, idfornecedor, periodo} = request.body
     let contas: any = []
-    const sql = knex('contaspagar as c').select('c.*','cl.nome as fornecedor', 't.descricao as tipodocumento')
+    const sql = knex('contaspagar as c').select('c.*','cl.nome as fornecedor', 't.descricao as tipodocumento', knex.raw('sum(p2.valor) as total'))
       .leftJoin('cliente as cl', 'cl.idcliente', 'c.idfornecedor')
       .leftJoin('tipodocumento as t', 't.idtipodocumento','c.idtipodocumento')
+      .leftJoin('contaspagarparcela as p', 'p.idcontaspagar','c.idcontaspagar')
+      .leftJoin('contaspagarparcela as p2', 'p2.idcontaspagar','c.idcontaspagar')
+      .groupBy(1,2,3,4,5,6,7,8,9).debug(true)
     if(idcontaspagar){
       sql.where('c.idcontaspagar',idcontaspagar)
+    }if(status === 1 && periodo){
+      sql.whereRaw(`c.datainclusao::date BETWEEN '${periodo[0]}' AND '${periodo[1]}'` )
+    }if(idfornecedor){
+      sql.where({idfornecedor})
+    }if(status !== 1){
+      if(periodo){
+        sql.whereBetween(status === 2 ? 'p.datapagamento' : 'p.datavencimento',periodo)
+      }
+      sql.where('p.pago', status === 2 ? true : false)
     }
     sql.then(async data => {
       for await (const d of data) {
+        let where = `idcontaspagar = ${d.idcontaspagar}`
+        if(status === 2){
+          where += ' AND pago = true '
+          periodo ? where += `AND datapagamento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}' ` : ''
+        }if(status === 3){
+          where += ' AND pago = false '
+          periodo ? where += `AND datavencimento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}' ` : ''
+        }
         const parcelas = await knex('contaspagarparcela').select('*')
-          .where('idcontaspagar',d.idcontaspagar)
-        
+          .whereRaw(where).debug(true)
+          
         contas.push({
           ...d,
           parcelas
@@ -62,7 +83,7 @@ class Debts {
   async update(request: Request, response: Response){
     const {idcontaspagarparcela} = request.params
     const {pago} = request.body
-    await knex('contaspagarparcela').update({pago, datapagamento: knex.raw('current_date')}).where({idcontaspagarparcela})
+    await knex('contaspagarparcela').update({pago, datapagamento: knex.raw('current_timestamp')}).where({idcontaspagarparcela})
       .then(d => response.json({message: 'Parcela alterada com sucesso!'}))
       .catch(e => response.status(400).json({message: 'Erro ao alterar parcela, tente novamente', err: e}))
   }

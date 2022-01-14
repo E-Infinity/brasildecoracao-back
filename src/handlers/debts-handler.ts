@@ -3,7 +3,7 @@ const { Debts, TypeDocument } = require("../usecases/Debts");
 
 const router = express.Router()
 
-router.get(':idcontaspagar?', Debts.list)
+router.post('/list/:idcontaspagar?', Debts.list)
 router.post('',Debts.register)
 router.delete(':idcontaspagar', Debts.delete)
 
