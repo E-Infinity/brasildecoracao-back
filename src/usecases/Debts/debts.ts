@@ -21,17 +21,17 @@ class Debts {
       sql.where({idfornecedor})
     }if(status !== 1){
       if(periodo){
-        sql.whereBetween(status === 2 ? 'p.datapagamento' : 'p.datavencimento',periodo)
+        sql.whereBetween(status === 3 ? 'p.datapagamento' : 'p.datavencimento',periodo)
       }
-      sql.where('p.pago', status === 2 ? true : false)
+      sql.where('p.pago', status === 3 ? true : false)
     }
     sql.then(async data => {
       for await (const d of data) {
         let where = `idcontaspagar = ${d.idcontaspagar}`
-        if(status === 2){
+        if(status === 3){
           where += ' AND pago = true '
           periodo ? where += `AND datapagamento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}' ` : ''
-        }if(status === 3){
+        }if(status === 2){
           where += ' AND pago = false '
           periodo ? where += `AND datavencimento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}' ` : ''
         }
