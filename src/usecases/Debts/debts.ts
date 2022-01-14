@@ -12,7 +12,7 @@ class Debts {
       .leftJoin('cliente as cl', 'cl.idcliente', 'c.idfornecedor')
       .leftJoin('tipodocumento as t', 't.idtipodocumento','c.idtipodocumento')
       .leftJoin('contaspagarparcela as p', 'p.idcontaspagar','c.idcontaspagar')
-      .groupBy(1,2,3,4,5,6,7,8,9).debug(true)
+      .groupBy(1,2,3,4,5,6,7,8,9,10).debug(true)
     if(idcontaspagar){
       sql.where('c.idcontaspagar',idcontaspagar)
     }if(status === 1 && periodo){
