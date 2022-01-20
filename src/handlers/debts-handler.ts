@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/list/:idcontaspagar?', Debts.list)
 router.post('',Debts.register)
-router.delete(':idcontaspagar', Debts.delete)
+router.delete('/:idcontaspagar', Debts.delete)
 
 router.put('/parcel/:idcontaspagarparcela', Debts.update)
 

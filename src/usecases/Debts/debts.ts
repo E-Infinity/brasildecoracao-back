@@ -91,9 +91,9 @@ class Debts {
 
   async delete(request: Request, response: Response){
     const {idcontaspagar} = request.params
-    await knex('contaspagarparcela').delete().where(idcontaspagar)
+    await knex('contaspagarparcela').delete().where({idcontaspagar}).debug(true)
     .then(async d => {
-      await knex('contaspagar').delete().where(idcontaspagar)
+      await knex('contaspagar').delete().where({idcontaspagar}).debug(true)
       .then(d => response.json({message: 'contas a pagar excluida com sucesso!'}))
       .catch(e => response.status(400).json({message: 'Erro ao excluir contas a pagar, tente novamente', err: e}))
     })
