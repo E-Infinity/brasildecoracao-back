@@ -97,7 +97,8 @@ class SalesOrder {
       parcelas,
       itens,
       arquivos,
-      data_prevista
+      data_prevista,
+      data_pedido
     } = request.body
 
     try {
@@ -105,7 +106,8 @@ class SalesOrder {
         knex('pedidovenda')
           .transacting(t)
           .insert({idfilialorigem, observacao, valor_total, valor_comdesconto, idusuario, idcliente,
-            quantidadeparcela, idsituacaopedidovenda, producao, entrada, idorigempedido,idtrial,data_prevista
+            quantidadeparcela, idsituacaopedidovenda, producao, entrada, idorigempedido,idtrial,data_prevista,
+            data_pedido
           }).returning('idpedidovenda')
           .then(async d => {
             idpedidovenda = d[0]
