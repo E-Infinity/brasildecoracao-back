@@ -11,7 +11,7 @@ router.post('/list/:idsituacaopedidovenda?', SalesOrder.list)
 router.put('/item/update/:iditempedidovenda', SalesOrderItem.update)
 
 router.delete('/delete/:idpedidovenda', SalesOrder.delete)
-router.get('/tiny/:idpedidovenda', SalesOrder.syncTiny)
+router.get('/tiny/:idpedidovenda/:empresa', SalesOrder.syncTiny)
 
 router.get('/paymenttype/list/:idtipopagamento?', PaymentType.list)
 router.post('/paymenttype/register', PaymentType.register)

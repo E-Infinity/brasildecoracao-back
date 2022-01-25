@@ -145,8 +145,8 @@ class SalesOrder {
   }
 
   async syncTiny(request: Request, response: Response){
-    const {idpedidovenda} = request.params
-    const resp = await insertTiny(idpedidovenda)
+    const {idpedidovenda,empresa} = request.params
+    const resp = await insertTiny(idpedidovenda,parseInt(empresa))
     if(resp){
       response.json({message: "Integração realizada."})
     }else{
@@ -194,8 +194,8 @@ class SalesOrder {
   }
 }
 
-async function insertTiny(idpedidovenda: any): Promise<boolean>{
-  const token = process.env.TOKEN_TINY
+async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>{
+  const token = empresa === 2 ? process.env.TOKEN_TINY_RN : process.env.TOKEN_TINY_BR
   let pedido: any 
   let itens: any = []
   let ret: boolean = false

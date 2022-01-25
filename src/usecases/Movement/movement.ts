@@ -38,6 +38,10 @@ class Movement {
   }
 
   async delete(request: Request, response: Response){
+    const {idfilial} = request.params 
+    await knex('estoque').update('quantidade',0).where({idfilial})
+    .then(data => response.json({message: 'Alteração realizada com sucesso!'}))
+    .catch(e => response.status(400).json({message: 'Erro ao incluir', e}))
   }
 }
 
