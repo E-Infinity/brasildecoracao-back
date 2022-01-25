@@ -195,7 +195,7 @@ class SalesOrder {
 }
 
 async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>{
-  const token = empresa === 2 ? process.env.TOKEN_TINY_RN : process.env.TOKEN_TINY_BR
+  const token = empresa === 2 ? '884bff6797f9aca61dc0d9cef669508488efb8c9' : 'b44bdb338b7523ce1e7671eaf42fdc7dac0e32ba'
   let pedido: any 
   let itens: any = []
   let ret: boolean = false
