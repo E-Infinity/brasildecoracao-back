@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import axios from 'axios'
 require("dotenv").config();
 import knex from "../../database";
@@ -44,7 +44,7 @@ class ProductGrade {
     const {idproduto,idcorfibra,idtrama, idcoraluminio} = request.body
     await knex('produtograde').insert({idproduto,idcorfibra,idtrama, idcoraluminio}).returning('idprodutograde')
       .then(data => {
-        //this.insertTiny(parseInt(data[0]), process.env.TOKEN_TINY )
+        // this.insertTiny(parseInt(data[0]))
         response.json({message:"Produto Grade incluída com sucesso!"})
       })
       .catch(e => response.status(400).json({message: "Erro ao cadastrar produto grade", e}))
@@ -61,40 +61,69 @@ class ProductGrade {
       .catch(e => response.status(400).json({message: "Erro ao alterar produto grade", e}))
   }
 
-  async insertTiny(idprodutograde: number, token: string | undefined) {
-    await knex('produtograde as pg').select(knex.raw(`
-        pg.idprodutograde as sequencia,
-        p.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as nome,
-        pg.idprodutograde as codigo,
-        'UN' as unidade,
-        0 as preco,
-        p.ncm,
-        0 as  origem,
-        'A' as situacao,
-        'P' as tipo
-      `))
-      .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
-      .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
-      .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
-      .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
-      .leftJoin('produtovalor as pv',knex.raw('pv.idproduto = pg.idproduto and pv.idcoraluminio = pg.idcoraluminio and pv.idtrama = pg.idtrama'))
-      .where({idprodutograde})
-      .then(async data => {
-        await axios.post(`https://api.tiny.com.br/api2/pedido.incluir.php`,null, {params: {
-        token,
-        formato: 'JSON',
-        produto: {
-          produtos: [
-            {
-              produto: {
-                ...data
-              }
+  // async cadastroTiny(request: Request, response: Response){
+  //   const dados = await knex('produtograde').select('idprodutograde').where('ativo', true)
+  //   for await (const d of dados) {
+  //     await this.insertTiny(parseInt(d.idprodutograde))
+  //     console.log(d.idprodutograde)
+  //   }
+
+  // }
+
+  async cadastroTiny(request: Request, response: Response) {
+    const dados = await knex('produtograde').select('idprodutograde').where('ativo', true).orderBy('idprodutograde')
+      .where('idprodutograde','>',3512)
+      //.where('idprodutograde', 305)
+    let idprodutograde = 0
+    for await (const d of dados) {
+      //console.log(d.idprodutograde)
+      idprodutograde = d.idprodutograde
+      const tokens = ['884bff6797f9aca61dc0d9cef669508488efb8c9','b44bdb338b7523ce1e7671eaf42fdc7dac0e32ba']
+      for await (const token of tokens) {
+        await knex('produtograde as pg').select(knex.raw(`
+            pg.idprodutograde as sequencia,
+            p.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as nome,
+            pg.idprodutograde as codigo,
+            'UN' as unidade,
+            pv.valor as preco,
+            p.ncm,
+            0 as  origem,
+            'A' as situacao,
+            'P' as tipo
+          `))
+          .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
+          .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
+          .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
+          .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
+          .leftJoin('produtovalor as pv',knex.raw('pv.idproduto = pg.idproduto and pv.idtrama = pg.idtrama'))
+          .where({idprodutograde})
+          .then(async data => {
+            await axios.post(`https://api.tiny.com.br/api2/produto.incluir.php`,null, {params: {
+            token,
+            formato: 'JSON',
+            produto: {
+              produtos: [
+                {
+                  produto: {
+                    ...data[0]
+                  }
+                }
+              ]
             }
-          ]
-        }
-      }}).catch(e => console.log(e))
-    })
+          }}).then(r => console.log((r.data.retorno.status_processamento === '3' ? 'OK' : r.data.retorno.registros[0]!!.registro.erros[0]!!.erro) + ' | ' + token + ' | ' + idprodutograde))
+          .catch(e => console.log(e))
+        })
+      }
+      await sleep(15000)
+    }
+    response.json('Finalizado.')
   }
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 module.exports = new ProductGrade()

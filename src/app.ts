@@ -7,7 +7,7 @@ var timeout = require('connect-timeout')
 const app = express()
 app.use(cors())
 app.use(express.json({limit: '4096mb'}))
-app.use(timeout('6000s'))
+app.use(timeout('60000s'))
 
 app.use(routes)
 

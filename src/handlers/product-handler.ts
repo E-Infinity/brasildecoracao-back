@@ -31,6 +31,8 @@ router.get('/productgrade/one/:idprodutograde', ProductGrade.listOne)
 router.post('/productgrade/register', ProductGrade.register)
 router.put('/productgrade/update/:idprodutograde', ProductGrade.update)
 
+router.get('/productgrade/integrar', ProductGrade.cadastroTiny)
+
 // Inventory
 router.get('/inventory/list/:idproduto?', Inventory.list)
 router.get('/inventory/grade/:idprodutograde?', Inventory.listGrade)

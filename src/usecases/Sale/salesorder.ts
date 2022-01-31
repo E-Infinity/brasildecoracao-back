@@ -218,14 +218,15 @@ async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>
         pg.idprodutograde as codigo,
         p.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as  descricao,
         i.quantidade as quantidade,
-        i.valor as valor_unitario
+        i.valor * (pv.valor_comdesconto/pv.valor_total) as valor_unitario
       `))
       .leftJoin('produtograde as pg', 'pg.idprodutograde', 'i.idprodutograde')
       .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
+      .leftJoin('pedidovenda as pv', 'pv.idpedidovenda', 'i.idpedidovenda')
       .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
       .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
       .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
-      .where('idpedidovenda',p[0].idpedidovenda)
+      .where('i.idpedidovenda',p[0].idpedidovenda)
 
       for await (const i of item) {
         itens.push({
