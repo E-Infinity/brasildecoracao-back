@@ -21,7 +21,7 @@ class Debts {
       sql.where({idfornecedor})
     }if(status !== 1){
       if(periodo){
-        sql.whereBetween(status === 3 ? 'p.datapagamento' : 'p.datavencimento',periodo)
+        status === 3 ? sql.whereRaw(`p.datapagamento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}'`) : sql.whereRaw(`p.datavencimento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}'`)
       }
       sql.where('p.pago', status === 3 ? true : false)
     }
