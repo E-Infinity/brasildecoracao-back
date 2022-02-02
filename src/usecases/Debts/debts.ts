@@ -36,11 +36,10 @@ class Debts {
           periodo ? where += `AND datavencimento::date BETWEEN '${periodo[0]}' AND '${periodo[1]}' ` : ''
         }
         const parcelas = await knex('contaspagarparcela').select('*')
-          .whereRaw(where).debug(true).orderBy('datavencimento')
+          .whereRaw(where).orderBy('datavencimento')
           
         contas.push({
           ...d,
-          datavencimento: parcelas[0].datavencimento,
           parcelas
         })
       }
