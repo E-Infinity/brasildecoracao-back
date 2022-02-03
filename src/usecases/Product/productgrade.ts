@@ -43,8 +43,7 @@ class ProductGrade {
   async register(request: Request, response: Response){
     const {idproduto,idcorfibra,idtrama, idcoraluminio} = request.body
     await knex('produtograde').insert({idproduto,idcorfibra,idtrama, idcoraluminio}).returning('idprodutograde')
-      .then(data => {
-        // this.insertTiny(parseInt(data[0]))
+      .then(async data => {
         response.json({message:"Produto Grade incluída com sucesso!"})
       })
       .catch(e => response.status(400).json({message: "Erro ao cadastrar produto grade", e}))
@@ -61,22 +60,13 @@ class ProductGrade {
       .catch(e => response.status(400).json({message: "Erro ao alterar produto grade", e}))
   }
 
-  // async cadastroTiny(request: Request, response: Response){
-  //   const dados = await knex('produtograde').select('idprodutograde').where('ativo', true)
-  //   for await (const d of dados) {
-  //     await this.insertTiny(parseInt(d.idprodutograde))
-  //     console.log(d.idprodutograde)
-  //   }
-
-  // }
-
   async cadastroTiny(request: Request, response: Response) {
+    const {_idprodutograde,update} = request.params
+    const url = update ? 'produto.alterar.php' : 'produto.incluir.php'
     const dados = await knex('produtograde').select('idprodutograde').where('ativo', true).orderBy('idprodutograde')
-      .where('idprodutograde','>',3512)
-      //.where('idprodutograde', 305)
+      .where('idprodutograde','>',_idprodutograde)
     let idprodutograde = 0
     for await (const d of dados) {
-      //console.log(d.idprodutograde)
       idprodutograde = d.idprodutograde
       const tokens = ['884bff6797f9aca61dc0d9cef669508488efb8c9','b44bdb338b7523ce1e7671eaf42fdc7dac0e32ba']
       for await (const token of tokens) {
@@ -89,7 +79,9 @@ class ProductGrade {
             p.ncm,
             0 as  origem,
             'A' as situacao,
-            'P' as tipo
+            'P' as tipo,
+            p.peso as peso_liquido,
+            p.peso as peso_bruto
           `))
           .leftJoin('produto as p', 'p.idproduto', 'pg.idproduto')
           .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
@@ -98,7 +90,7 @@ class ProductGrade {
           .leftJoin('produtovalor as pv',knex.raw('pv.idproduto = pg.idproduto and pv.idtrama = pg.idtrama'))
           .where({idprodutograde})
           .then(async data => {
-            await axios.post(`https://api.tiny.com.br/api2/produto.incluir.php`,null, {params: {
+            await axios.post(`https://api.tiny.com.br/api2/${url}`,null, {params: {
             token,
             formato: 'JSON',
             produto: {
@@ -110,7 +102,13 @@ class ProductGrade {
                 }
               ]
             }
-          }}).then(r => console.log((r.data.retorno.status_processamento === '3' ? 'OK' : r.data.retorno.registros[0]!!.registro.erros[0]!!.erro) + ' | ' + token + ' | ' + idprodutograde))
+          }})
+          .then(async r => {
+            if(r.data.retorno.status_processamento === '3'){
+              await knex('produtograde').update('tiny',true).where({idprodutograde})
+            }
+            console.log((r.data.retorno.status_processamento === '3' ? 'OK' : r.data.retorno.registros[0]!!.registro.erros[0]!!.erro) + ' | ' + token + ' | ' + idprodutograde)
+          })
           .catch(e => console.log(e))
         })
       }

@@ -201,7 +201,7 @@ async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>
   let itens: any = []
   let ret: boolean = false
 
-  await knex('pedidovenda').select('*').where({idpedidovenda})
+  await knex('pedidovenda as pv').select('pv.*','u.nome as vendedora').where({idpedidovenda}).leftJoin('usuario as u','pv.idusuario','u.idusuario')
     .then(async p => {
       const cliente = await knex('cliente').select(knex.raw(`
         nome,
@@ -239,6 +239,7 @@ async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>
         data_prevista: new Date(p[0].data_prevista).toLocaleString('pt-BR'),
         numero_pedido_ecommerce: idpedidovenda,
         ecommerce: "Plataforma E-Infinity",
+        obs: `Pedido: ${idpedidovenda} | Vendedor(a): ${p[0].vendedor} | Observação: ${p[0].observacao}`,
         cliente: {
           nome: cliente[0].nome,
           tipo_pessoa: cliente[0].tipo_pessoa,
