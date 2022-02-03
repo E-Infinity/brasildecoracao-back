@@ -196,6 +196,7 @@ class SalesOrder {
 
 async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>{
   const token = empresa === 2 ? '884bff6797f9aca61dc0d9cef669508488efb8c9' : 'b44bdb338b7523ce1e7671eaf42fdc7dac0e32ba'
+  const empresa_faturamento = empresa === 2 ? 'Brasil de Coração' : 'RN Martins'
   let pedido: any 
   let itens: any = []
   let ret: boolean = false
@@ -267,7 +268,7 @@ async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>
         const idtiny = data.data.retorno.registros.registro.id
         const sequenciatiny = data.data.retorno.registros.registro.sequencia
         const numerotiny = data.data.retorno.registros.registro.numero
-        await knex('pedidovenda').update({idtiny, sequenciatiny, numerotiny}).where({idpedidovenda})
+        await knex('pedidovenda').update({idtiny, sequenciatiny, numerotiny,empresa_faturamento}).where({idpedidovenda})
         ret = true
         return true
       }else{
