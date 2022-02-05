@@ -201,7 +201,7 @@ async function insertTiny(idpedidovenda: any, empresa: number): Promise<boolean>
   let itens: any = []
   let ret: boolean = false
 
-  await knex('pedidovenda as pv').select('pv.*','u.nome as vendedora').where({idpedidovenda}).leftJoin('usuario as u','pv.idusuario','u.idusuario')
+  await knex('pedidovenda as pv').select('pv.*','u.nome as vendedor').where({idpedidovenda}).leftJoin('usuario as u','pv.idusuario','u.idusuario')
     .then(async p => {
       const cliente = await knex('cliente').select(knex.raw(`
         nome,
