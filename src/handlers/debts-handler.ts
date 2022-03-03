@@ -11,5 +11,6 @@ router.put('/parcel/:idcontaspagarparcela', Debts.update)
 
 router.get('/typedocument/:idtipodocumento?', TypeDocument.list)
 
+router.get('/typedebts/:idtipoconta?', TypeDocument.list)
 
 module.exports = router

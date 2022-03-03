@@ -12,7 +12,7 @@ class Debts {
       .leftJoin('cliente as cl', 'cl.idcliente', 'c.idfornecedor')
       .leftJoin('tipodocumento as t', 't.idtipodocumento','c.idtipodocumento')
       .leftJoin('contaspagarparcela as p', 'p.idcontaspagar','c.idcontaspagar')
-      .groupBy(1,2,3,4,5,6,7,8,9,10).debug(true)
+      .groupBy(1,2,3,4,5,6,7,8,9,10,11,12)
     if(idcontaspagar){
       sql.where('c.idcontaspagar',idcontaspagar)
     }if(status === 1 && periodo){
@@ -50,12 +50,12 @@ class Debts {
 
   async register(request: Request, response: Response){
     let idcontaspagar: number | null = null
-    const {numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,parcelas,observacao} = request.body
+    const {numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,parcelas,observacao,idtipocontaspagar, codigobarra} = request.body
     console.log({})
     try{
       await knex.transaction((t) => {
         knex('contaspagar').transacting(t)
-        .insert({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,observacao})
+        .insert({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,observacao,idtipocontaspagar, codigobarra})
         .returning('idcontaspagar').debug(true)
         .then(async d => {
           idcontaspagar = d[0]
@@ -83,8 +83,8 @@ class Debts {
 
   async update(request: Request, response: Response){
     const {idcontaspagarparcela} = request.params
-    const {pago,datapagamento} = request.body
-    await knex('contaspagarparcela').update({pago, datapagamento}).where({idcontaspagarparcela})
+    const {pago,datapagamento,idtipocontaspagar, codigobarra} = request.body
+    await knex('contaspagarparcela').update({pago, datapagamento,idtipocontaspagar, codigobarra}).where({idcontaspagarparcela})
       .then(d => response.json({message: 'Parcela alterada com sucesso!'}))
       .catch(e => response.status(400).json({message: 'Erro ao alterar parcela, tente novamente', err: e}))
   }
