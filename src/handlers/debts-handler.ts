@@ -1,5 +1,5 @@
 import express from "express";
-const { Debts, TypeDocument } = require("../usecases/Debts");
+const { Debts, TypeDocument,TypeDebts } = require("../usecases/Debts");
 
 const router = express.Router()
 
@@ -11,6 +11,6 @@ router.put('/parcel/:idcontaspagarparcela', Debts.update)
 
 router.get('/typedocument/:idtipodocumento?', TypeDocument.list)
 
-router.get('/typedebts/:idtipoconta?', TypeDocument.list)
+router.get('/typedebts/:idtipoconta?', TypeDebts.list)
 
 module.exports = router
