@@ -1,5 +1,5 @@
 const TypeDocument = require('./typeDocument')
-const TypeDebts = require('./TypeDebts')
+const TypeDebts = require('./typeDebts')
 const Debts = require('./debts')
 
 module.exports = {
