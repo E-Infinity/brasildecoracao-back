@@ -90,6 +90,27 @@ class Debts {
       .catch(e => response.status(400).json({message: 'Erro ao alterar parcela, tente novamente', err: e}))
   }
 
+  async updateValue(request: Request, response: Response){
+    const {idcontaspagar} = request.params
+    const {parcelas} = request.body
+    const cond = await knex('contaspagarparcela').select('*').where({idcontaspagar}).where('pago',true)
+    if(cond.length > 0){
+      response.status(400).json({message: 'Não foi possivel realizar a operação, já existem parcelas baixadas!'})
+    }else{
+      await knex('contaspagarparcela').delete().where({idcontaspagar})
+        .then(async () => {
+          let parcels = []
+          for await (const p of parcelas) {
+            parcels.push({...p, idcontaspagar})
+          }
+          await knex('contaspagarparcela').insert({parcels})
+            .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
+            .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
+        })
+        .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
+    }
+  }
+
   async delete(request: Request, response: Response){
     const {idcontaspagar} = request.params
     await knex('contaspagarparcela').delete().where({idcontaspagar}).debug(true)

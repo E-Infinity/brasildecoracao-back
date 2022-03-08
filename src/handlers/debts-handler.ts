@@ -8,6 +8,7 @@ router.post('',Debts.register)
 router.delete('/:idcontaspagar', Debts.delete)
 
 router.put('/parcel/:idcontaspagarparcela', Debts.update)
+router.put('/parcelvalue/:idcontaspagar', Debts.updateValue)
 
 router.get('/typedocument/:idtipodocumento?', TypeDocument.list)
 

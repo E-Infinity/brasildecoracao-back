@@ -65,8 +65,8 @@ class ProductGrade {
     const url = update ? 'produto.alterar.php' : 'produto.incluir.php'
     const dados = await knex('produtograde').select('idprodutograde').orderBy('idprodutograde')
       //.where('ativo', true)
-      //.where('idprodutograde','=',_idprodutograde).debug(true)
-      .where('tiny', false)
+      .where('idprodutograde','=',_idprodutograde).debug(true)
+      // .where('tiny', false)
     let idprodutograde = 0
     for await (const d of dados) {
       idprodutograde = d.idprodutograde
