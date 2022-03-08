@@ -92,22 +92,28 @@ class Debts {
 
   async updateValue(request: Request, response: Response){
     const {idcontaspagar} = request.params
-    const {parcelas} = request.body
+    const {numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor,observacao,idtipocontaspagar, codigobarra,parcelas} = request.body
     const cond = await knex('contaspagarparcela').select('*').where({idcontaspagar}).where('pago',true)
     if(cond.length > 0){
       response.status(400).json({message: 'Não foi possivel realizar a operação, já existem parcelas baixadas!'})
     }else{
-      await knex('contaspagarparcela').delete().where({idcontaspagar})
+      await knex('contaspagar').update({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor
+                                        ,observacao,idtipocontaspagar, codigobarra})
+        .where({idcontaspagar})
         .then(async () => {
-          let parcels = []
-          for await (const p of parcelas) {
-            parcels.push({...p, idcontaspagar})
-          }
-          await knex('contaspagarparcela').insert({parcels})
-            .then(() => response.json({message: 'Alteração realizada com sucesso!'}))
+          await knex('contaspagarparcela').delete().where({idcontaspagar})
+            .then(async () => {
+              let parcels = []
+              for await (const p of parcelas) {
+                parcels.push({...p, idcontaspagar})
+              }
+              await knex('contaspagarparcela').insert({parcels})
+                .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
+            })
             .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
         })
         .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
+      response.json({message: 'Alteração realizada com sucesso!'})
     }
   }
 
