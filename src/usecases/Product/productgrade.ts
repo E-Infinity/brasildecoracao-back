@@ -62,7 +62,7 @@ class ProductGrade {
 
   async cadastroTiny(request: Request, response: Response) {
     const {_idprodutograde,update} = request.params
-    const url = update ? 'produto.alterar.php' : 'produto.incluir.php'
+    const url = update || update == 'true' ? 'produto.alterar.php' : 'produto.incluir.php'
     const dados = await knex('produtograde').select('idprodutograde').orderBy('idprodutograde')
       //.where('ativo', true)
       .where('idprodutograde','=',_idprodutograde).debug(true)
