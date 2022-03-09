@@ -97,6 +97,9 @@ class Debts {
     if(cond.length > 0){
       response.status(400).json({message: 'Não foi possivel realizar a operação, já existem parcelas baixadas!'})
     }else{
+      try{
+
+      
       await knex('contaspagar').update({numeronota,idtipodocumento,numerodocumento,quantidadeparcelas,idfornecedor
                                         ,observacao,idtipocontaspagar, codigobarra})
         .where({idcontaspagar})
@@ -107,13 +110,13 @@ class Debts {
               for await (const p of parcelas) {
                 parcels.push({...p, idcontaspagar})
               }
-              await knex('contaspagarparcela').insert({parcels})
-                .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
+              await knex('contaspagarparcela').insert(parcels)
             })
-            .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
         })
-        .catch(e => response.status(400).json({message: 'Não foi possível realizar a operação', error: e}))
       response.json({message: 'Alteração realizada com sucesso!'})
+      }catch(e){
+        response.status(400).json({message: 'Não foi possível realizar a operação', error: e})
+      }
     }
   }
 
