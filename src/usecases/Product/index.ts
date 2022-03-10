@@ -5,6 +5,7 @@ const ColorAluminio = require('./coloraluminio')
 const ProductGrade = require('./productgrade')
 const ProductPrice = require('./productprice')
 const Inventory = require('./inventory')
+const ProductionTrama = require('./productiontrama')
 
 module.exports = {
   Product,
@@ -13,5 +14,6 @@ module.exports = {
   ColorAluminio,
   ProductGrade,
   ProductPrice,
-  Inventory
+  Inventory,
+  ProductionTrama
 }
