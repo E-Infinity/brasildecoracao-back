@@ -44,7 +44,7 @@ router.post('/productprice/register', ProductPrice.register)
 router.put('/productprice/update/:idprodutovalor', ProductPrice.update)
 
 // Production Trama
-router.get('/producaotrama/:idproducaotrama', ProductionTrama.list)
+router.get('/producaotrama/:idproducaotrama?', ProductionTrama.list)
 router.post('/producaotrama', ProductionTrama.register)
 
 module.exports = router
