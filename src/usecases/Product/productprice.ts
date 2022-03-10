@@ -25,7 +25,8 @@ class ProductPrice {
       t.descricao as trama,
       cf.descricao as corfibra,
       pv.custo,
-      pv.valor
+      pv.valor,
+      pv.valorproducao
     `))
     .innerJoin('produtovalor as pv ', knex.raw(`pv.idproduto = pg.idproduto 
       and pv.idtrama = pg.idtrama`))
@@ -38,16 +39,16 @@ class ProductPrice {
   }
 
   async register(request: Request, response: Response){
-    const {idproduto,idtrama, custo, valor} = request.body
-    await knex('produtovalor').insert({idproduto,idtrama, custo, valor})
+    const {idproduto,idtrama, custo, valor, valorproducao} = request.body
+    await knex('produtovalor').insert({idproduto,idtrama, custo, valor,valorproducao})
       .then(data => response.json({message:"Preço incluído com sucesso!"}))
       .catch(e => response.status(400).json({message: "Erro ao cadastrar Preço", e}))
   }
 
   async update(request: Request, response: Response){
     const {idprodutovalor} = request.params
-    const {custo, valor,idtrama} = request.body
-    await knex('produtovalor').update({custo,valor,idtrama}).where({idprodutovalor})
+    const {custo, valor,idtrama, valorproducao} = request.body
+    await knex('produtovalor').update({custo,valor,idtrama,valorproducao}).where({idprodutovalor})
       .then(data => response.json({message: 'Valor alterado com suesso'}))
       .catch(e => response.status(400).json({message: "Erro ao alterar Preço", e}))
   }
