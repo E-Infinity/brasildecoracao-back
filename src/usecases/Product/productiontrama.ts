@@ -13,7 +13,7 @@ class ProductionTrama {
 
   async register(request: Request, response: Response){
     const {idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial, estoque} = request.body
-    await knex('producaotrama').insert({idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda}).returning('idproducaotrama')
+    await knex('producaotrama').insert({idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial}).returning('idproducaotrama')
       .then(async data => {
         if(estoque === 'true' || estoque == true){
           await knex('movimentacao').insert({idfilial, idprodutograde, quantidade, idusuario: idusuarioinclusao,idtipomovimento: 1})
