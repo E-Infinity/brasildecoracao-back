@@ -11,7 +11,8 @@ class ProductionTrama {
           ui.nome as usuarioinclusao,
           u.nome as usuario,
           pd.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as produto
-      `))
+          f.descricao as filial
+        `))
       .leftJoin('usuario as ui','ui.idusuario','p.idusuarioinclusao')
       .leftJoin('usuario as u','u.idusuario','p.idusuario')
       .leftJoin('produtograde as pg','pg.idprodutograde','p.idprodutograde')
@@ -19,6 +20,7 @@ class ProductionTrama {
       .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
       .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
       .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
+      .leftJoin('filial as f', 'f.idfilial','p.idfilial')
       if(idproducaotrama){
         sql.where('p.idproducaotrama',idproducaotrama)
       }if(idusuario){
@@ -30,8 +32,8 @@ class ProductionTrama {
   }
 
   async register(request: Request, response: Response){
-    const {idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial, estoque} = request.body
-    await knex('producaotrama').insert({idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial}).returning('idproducaotrama')
+    const {idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial, estoque, valor} = request.body
+    await knex('producaotrama').insert({idusuarioinclusao,idusuario,dataproducao,idprodutograde,quantidade,iditempedidovenda,idfilial,valor}).returning('idproducaotrama')
       .then(async data => {
         if(estoque === 'true' || estoque == true){
           await knex('movimentacao').insert({idfilial, idprodutograde, quantidade, idusuario: idusuarioinclusao,idtipomovimento: 1})
