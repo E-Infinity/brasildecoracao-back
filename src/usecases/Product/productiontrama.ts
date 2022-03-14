@@ -10,7 +10,7 @@ class ProductionTrama {
           p.*,
           ui.nome as usuarioinclusao,
           u.nome as usuario,
-          pd.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as produto
+          pd.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as produto,
           f.descricao as filial
         `))
       .leftJoin('usuario as ui','ui.idusuario','p.idusuarioinclusao')
