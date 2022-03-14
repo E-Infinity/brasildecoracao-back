@@ -4,9 +4,27 @@ import knex from "../../database";
 class ProductionTrama {
   async list(request: Request, response: Response){
     const {idproducaotrama} = request.params
-    const sql = knex('producaotrama').select(knex.raw('idproducaotrama as id'),'*')
+    const {datainicial, datafinal, idusuario} = request.body
+    const sql = knex('producaotrama as p').select(knex.raw(`
+          p.idproducaotrama as id,
+          p.*,
+          ui.nome as usuarioinclusao,
+          u.nome as usuario,
+          pd.descricao||' | Trama: '||t.descricao||' | Aluminio: '||ca.descricao||' | Cor Fibra: '||cf.descricao as produto
+      `))
+      .leftJoin('usuario as ui','ui.idusuario','p.idusuarioinclusao')
+      .leftJoin('usuario as u','u.idusuario','p.idusuario')
+      .leftJoin('produtograde as pg','pg.idprodutograde','p.idprodutograde')
+      .leftJoin('produto as pd','pd.idproduto','pg.idproduto')
+      .leftJoin('trama as t', 't.idtrama', 'pg.idtrama')
+      .leftJoin('coraluminio as ca', 'ca.idcoraluminio', 'pg.idcoraluminio')
+      .leftJoin('corfibra as cf', 'cf.idcorfibra', 'pg.idcorfibra')
       if(idproducaotrama){
-        sql.where({idproducaotrama})
+        sql.where('p.idproducaotrama',idproducaotrama)
+      }if(idusuario){
+        sql.where('p.idusuario',idusuario)
+      }if(datainicial && datafinal){
+        sql.whereBetween('p.dataproducao',[datainicial,datafinal])
       }
       sql.then(data => response.json(data))
   }
