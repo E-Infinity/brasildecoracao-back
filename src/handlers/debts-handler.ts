@@ -14,6 +14,6 @@ router.get('/typedocument/:idtipodocumento?', TypeDocument.list)
 
 router.get('/typedebts/:idtipoconta?', TypeDebts.list)
 router.post('/typedebts', TypeDebts.register)
-router.post('/typedebts/:idtipocontaspagar', TypeDebts.update)
+router.put('/typedebts/:idtipocontaspagar', TypeDebts.update)
 
 module.exports = router
