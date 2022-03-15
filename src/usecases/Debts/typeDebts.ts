@@ -21,7 +21,7 @@ class TypeDebts {
   async update(request: Request, response: Response){
     const {idtipocontaspagar} = request.params
     const {descricao} = request.body
-    await knex('tipocontaspagar').update({descricao}).returning('idtipocontaspagar')
+    await knex('tipocontaspagar').update({descricao}).returning('idtipocontaspagar').where({idtipocontaspagar})
       .then(data => response.json({message: `Tipo contas a pagar alterado com sucesso!`, idtipocontaspagar: data[0]}))
       .catch(e => response.json({message: 'Erro ao alterar!', erro: e}))
   }
