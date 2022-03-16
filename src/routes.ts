@@ -14,7 +14,7 @@ const Movement = require('./handlers/movement-handler')
 const Debts = require('./handlers/debts-handler')
 
 router.get("/", function (req, res) {
-  res.json({ API: "Brasil de Coração - 1.0.6" });
+  res.json({ API: "Brasil de Coração - 1.0.6 " + process.env.DB_HOST });
 });
 
 router.use('/auth', Auth)
