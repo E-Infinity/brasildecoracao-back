@@ -8,8 +8,8 @@ const app = express()
 app.use(express.json({limit: '4096mb'}))
 app.use(timeout('60000s'))
 app.use(cors({
-  origin: ['*', '191.252.186.131']
-}))
+  origin: 'https://sistema.brasildecoracao.com'
+}));
 
 app.use(routes)
 
