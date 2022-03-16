@@ -45,6 +45,7 @@ router.put('/productprice/update/:idprodutovalor', ProductPrice.update)
 
 // Production Trama
 router.get('/producaotrama/:idproducaotrama?', ProductionTrama.list)
+router.delete('/producaotrama/:idproducaotrama', ProductionTrama.delete)
 router.post('/producaotrama/list', ProductionTrama.list)
 router.post('/producaotrama', ProductionTrama.register)
 

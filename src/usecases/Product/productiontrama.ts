@@ -57,6 +57,14 @@ class ProductionTrama {
       .then(data => response.json({message:"Produção de trama alterada com sucesso!"}))
       .catch(e => response.status(400).json({message: "Erro ao alterar proução de trama", e}))
   }
+
+  async delete(request: Request, response: Response){
+    const {idproducaotrama} = request.params
+    await knex('producaotrama').delete()
+      .where({idproducaotrama})
+      .then(data => response.json({message:"Produção de trama excluido com sucesso!"}))
+      .catch(e => response.status(400).json({message: "Erro ao excluir proução de trama", e}))
+  }
 }
 
 module.exports = new ProductionTrama()
