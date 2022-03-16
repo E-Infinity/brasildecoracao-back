@@ -47,7 +47,7 @@ class SalesOrder {
           .where('u.idusuario', d.idusuario)
         const itempedidovenda = await knex('itempedidovenda as i').select('i.*', 'f.cidade', 'f.uf', 'f.descricao as filial',
             'pg.idproduto', 'p.descricao as produto','pg.idtrama', 't.descricao as trama_desc', 'pg.idcorfibra', 'cf.descricao as corfibra',
-            'pg.idcoraluminio', 'ca.descricao as coraluminio'
+            'pg.idcoraluminio', 'ca.descricao as coraluminio','pv.valorproducao'
           )
           .leftJoin('filial as f', 'f.idfilial', 'i.idfilialsaldo')
           .leftJoin('produtograde as pg', 'pg.idprodutograde', 'i.idprodutograde')
@@ -55,6 +55,7 @@ class SalesOrder {
           .leftJoin('trama as t', 'pg.idtrama', 't.idtrama')
           .leftJoin('corfibra as cf', 'pg.idcorfibra', 'cf.idcorfibra')
           .leftJoin('coraluminio as ca', 'pg.idcoraluminio', 'ca.idcoraluminio')
+          .leftJoin(knex.raw(`produtovalor as pv ON pv.idproduto = pg.idproduto and pv.idtrama = pg.idtrama`))
           .where('i.idpedidovenda', d.idpedidovenda)
         
         const arquivos = await knex('arquivos').select('*')
