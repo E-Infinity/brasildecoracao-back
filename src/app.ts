@@ -7,10 +7,6 @@ var timeout = require('connect-timeout')
 const app = express()
 app.use(express.json({limit: '4096mb'}))
 app.use(timeout('60000s'))
-app.use(cors({
-  origin: ['https://sistema.brasildecoracao.com'],
-  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-}))
 
 app.use(routes)
 
